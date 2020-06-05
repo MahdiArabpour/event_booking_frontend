@@ -1,22 +1,25 @@
+// main.dart
 import 'package:flutter/material.dart';
+import 'pages/login_page.dart';
 
-void main() => runApp(EventBookingApp());
+void main() => runApp(MyApp());
 
-class EventBookingApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Event Booking',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('EventBooking'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
+      title: 'Login Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        accentColor: Colors.orange,
+        cursorColor: Colors.orange,
+        textTheme: TextTheme(
+          button: TextStyle(
+            fontFamily: 'OpenSans',
           ),
         ),
       ),
+      home: LoginPage(),
     );
   }
 }
