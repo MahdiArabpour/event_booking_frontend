@@ -6,7 +6,7 @@ class DashboardPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('appbarTitle'),
+        title: Text('Event Booking'),
       ),
       body: Center(
         child: Container(child: Text(

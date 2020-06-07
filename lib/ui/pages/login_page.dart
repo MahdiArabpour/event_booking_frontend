@@ -1,15 +1,12 @@
-import 'package:event_booking/pages/dashboard-page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+
+import 'dashboard-page.dart';
 
 class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String> _authUser(LoginData data) {
-      return null;
-  }
-
-  Future<String> _recoverPassword(String name) {
       return null;
   }
 
@@ -24,7 +21,6 @@ class LoginPage extends StatelessWidget {
           builder: (context) => DashboardPage(),
         ));
       },
-      onRecoverPassword: null,
     );
   }
 }
