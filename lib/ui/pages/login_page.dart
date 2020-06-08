@@ -4,7 +4,6 @@ import 'package:flutter_login/flutter_login.dart';
 import 'dashboard-page.dart';
 
 class LoginPage extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String> _authUser(LoginData data) {
       return null;

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:event_booking/core/error/exceptions.dart';
+import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/data/datasources/graphql.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,12 +20,25 @@ void main() {
   });
 
   group('GraphQl query', () {
+    final requestQuery = 'query{events{title}}';
+    final responseBody = """
+      {
+        "data": {
+          "events": [
+            {
+              "title": "Testing"
+            },
+            {
+              "title": "Testing again"
+            }
+          ]
+        }
+      }
+    """;
+
     test(
       'Performs a POST request on a graphql URL with the right body',
       () async {
-        final requestQuery = 'query{events{title}}';
-        final responseBody = '"data":{"test":"test"}';
-
         when(httpClient.post(any,
                 headers: anyNamed('headers'), body: anyNamed('body')))
             .thenAnswer(
@@ -49,29 +62,27 @@ void main() {
     test(
       'Returns the right json string when the status code is 200 ok',
       () async {
-        final requestQuery = 'query{events{title}}';
-        final responseBody = '"data":{"test":"test"}';
         when(httpClient.post(any,
                 headers: anyNamed('headers'), body: anyNamed('body')))
             .thenAnswer(
                 (realInvocation) async => http.Response(responseBody, 200));
 
-        String result = await graphQl.send(requestQuery);
+        final result = await graphQl.send(requestQuery);
 
-        expect(result, equals(responseBody));
+        expect(result, equals(json.decode(responseBody)));
       },
     );
 
     test(
       'Throws a ServerException when the status code is not 200',
       () async {
-        final requestQuery = 'query{events{title}}';
         when(httpClient.post(any,
                 headers: anyNamed('headers'), body: anyNamed('body')))
-            .thenAnswer(
-                (realInvocation) async => http.Response('Unsupported Media Type', 415));
+            .thenAnswer((realInvocation) async =>
+                http.Response('Unsupported Media Type', 415));
 
-        expect(() => graphQl.send(requestQuery), throwsA( const TypeMatcher<ServerException>() ));
+        expect(() => graphQl.send(requestQuery),
+            throwsA(const TypeMatcher<ServerException>()));
       },
     );
   });

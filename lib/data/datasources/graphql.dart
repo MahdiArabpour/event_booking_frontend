@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:event_booking/core/error/exceptions.dart';
+import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +10,7 @@ abstract class GraphQl {
   /// Sends a post request to the graphql server with the given body as request body
   /// and given token as 'Authorization' request header and if request was successful,
   /// returns result body as [String], Otherwise throws a [ServerException]!
-  Future<String> send(String body, {String token = ''});
+  Future<Map<String,dynamic>> send(String body, {String token = ''});
 }
 
 const url = 'http://localhost:3000/graphql';
@@ -42,10 +42,10 @@ class GraphQlImpl implements GraphQl{
     final isSuccessful = response.statusCode == 200 || response.statusCode == 201;
 
     if (isSuccessful) {
-      return response.body;
+      return json.decode(response.body);
     }
 
-    throw ServerException();
+    throw ServerException(message: response.body);
   }
 
 }
