@@ -1,10 +1,11 @@
-import 'package:event_booking/core/errors/exceptions.dart';
-import 'package:event_booking/data/datasources/graphql.dart';
-import 'package:event_booking/data/models/user.dart';
-import 'package:event_booking/data/usecases/signup.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:matcher/matcher.dart';
+
+import 'package:event_booking/src/core/errors/exceptions.dart';
+import 'package:event_booking/src/data/datasources/graphql.dart';
+import 'package:event_booking/src/data/models/user.dart';
+import 'package:event_booking/src/data/usecases/signup.dart';
 
 class MockGraphQl extends Mock implements GraphQl {}
 
@@ -29,7 +30,7 @@ void main() {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "data": {
                 "createUser": {
-                  "_id": "5ede58b19a9ba33ce83ee0b3",
+                  "id": "5ede58b19a9ba33ce83ee0b3",
                   "email": "test1@test.com"
                 }
               }
@@ -47,7 +48,7 @@ void main() {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "data": {
                 "createUser": {
-                  "_id": "5ede58b19a9ba33ce83ee0b3",
+                  "id": "5ede58b19a9ba33ce83ee0b3",
                   "email": "test1@test.com"
                 }
               }
@@ -55,10 +56,9 @@ void main() {
 
         final user = await signUp(email, password);
 
-        final expectedUser = User(
-          id: "5ede58b19a9ba33ce83ee0b3",
-          email: "test1@test.com",
-        );
+        final expectedUser = User((b) => b
+          ..id = "5ede58b19a9ba33ce83ee0b3"
+          ..email = "test1@test.com");
 
         expect(
           user,
@@ -69,13 +69,14 @@ void main() {
 
     test(
       'Throws a SignUpUserException when the status code is not 200',
-          () async {
-            when(graphQl.send(any)).thenThrow(ServerException(message: 'User already exists'));
+      () async {
+        when(graphQl.send(any))
+            .thenThrow(ServerException(message: 'User already exists'));
 
-            expect(
-              () => signUp(email, password),
-              throwsA(TypeMatcher<SignUpUserException>()),
-            );
+        expect(
+          () => signUp(email, password),
+          throwsA(TypeMatcher<SignUpUserException>()),
+        );
       },
     );
   });

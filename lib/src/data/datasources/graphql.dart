@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
+import '../../core/errors/exceptions.dart';
 
 abstract class GraphQl {
 

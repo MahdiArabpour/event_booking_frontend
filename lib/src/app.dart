@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/login_page.dart';
+import 'ui/pages/login_page.dart';
 
 class App extends StatelessWidget {
   @override
