@@ -2,7 +2,7 @@ import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:matcher/matcher.dart';
 
-import 'package:event_booking/src/core/errors/exceptions.dart';
+import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/datasources/graphql.dart';
 import 'package:event_booking/src/data/models/user.dart';
 import 'package:event_booking/src/data/usecases/signup.dart';
@@ -30,7 +30,7 @@ void main() {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "data": {
                 "createUser": {
-                  "id": "5ede58b19a9ba33ce83ee0b3",
+                  "_id": "5ede58b19a9ba33ce83ee0b3",
                   "email": "test1@test.com"
                 }
               }
@@ -48,7 +48,7 @@ void main() {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "data": {
                 "createUser": {
-                  "id": "5ede58b19a9ba33ce83ee0b3",
+                  "_id": "5ede58b19a9ba33ce83ee0b3",
                   "email": "test1@test.com"
                 }
               }

@@ -1,4 +1,10 @@
-part of 'user.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of '../user.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
 
 Serializer<User> _$userSerializer = new _$UserSerializer();
 

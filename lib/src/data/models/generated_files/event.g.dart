@@ -1,4 +1,10 @@
-part of 'event.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of '../event.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
 
 Serializer<Event> _$eventSerializer = new _$EventSerializer();
 

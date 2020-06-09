@@ -5,7 +5,7 @@ import 'package:built_value/standard_json_plugin.dart';
 import './event.dart';
 import './user.dart';
 
-part 'serializers.g.dart';
+part 'generated_files/serializers.g.dart';
 
 @SerializersFor(const [
   User,

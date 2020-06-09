@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 import '../datasources/graphql.dart';
 import '../models/user.dart';
-import '../../core/errors/exceptions.dart';
+import '../../../core/errors/exceptions.dart';
 
 class SignUp {
   final GraphQl graphQl;

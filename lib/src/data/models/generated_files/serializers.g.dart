@@ -1,5 +1,10 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'serializers.dart';
+part of '../serializers.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Event.serializer)

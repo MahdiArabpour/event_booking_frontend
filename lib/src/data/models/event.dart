@@ -6,7 +6,7 @@ import 'package:built_value/serializer.dart';
 import './serializers.dart';
 import './user.dart';
 
-part 'event.g.dart';
+part 'generated_files/event.g.dart';
 
 abstract class Event implements Built<Event, EventBuilder> {
   String get id;
@@ -30,6 +30,6 @@ abstract class Event implements Built<Event, EventBuilder> {
   factory Event.fromJson(Map<String, dynamic> map) =>
       serializers.deserializeWith(Event.serializer, map);
 
-  String toJson() =>
-      json.encode(serializers.serializeWith(Event.serializer, this));
+  Map<String, dynamic> toJson() =>
+      serializers.serializeWith(Event.serializer, this);
 }

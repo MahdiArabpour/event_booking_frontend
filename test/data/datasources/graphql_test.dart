@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:matcher/matcher.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:event_booking/src/core/errors/exceptions.dart';
+import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/datasources/graphql.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
