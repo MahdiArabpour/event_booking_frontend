@@ -12,12 +12,6 @@ class DashboardPage extends StatelessWidget {
         child: Container(child: Text(
            'Hello World')),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.clear), //Change Icon
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .endFloat, //Change for different locations
     );
   }
 }

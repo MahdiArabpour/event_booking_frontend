@@ -13,13 +13,13 @@ abstract class GraphQl {
   Future<Map<String,dynamic>> send(String body, {String token = ''});
 }
 
-const url = 'http://192.168.43.231:3000/graphql';
-
 class GraphQlImpl implements GraphQl{
   final http.Client client;
+  final String url;
 
   GraphQlImpl({
     @required this.client,
+    @required this.url,
   });
 
   @override

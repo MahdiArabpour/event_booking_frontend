@@ -8,10 +8,12 @@ import './src/data/usecases/signup.dart';
 
 GetIt locator = GetIt.instance;
 
+const graphqlServerUrl = 'https://event-booking-graphql.herokuapp.com/graphql';
+
 void setupLocator() {
   locator.registerFactory(() => User());
   locator.registerFactory(() => Event());
-  locator.registerLazySingleton(() => GraphQlImpl(client: locator()));
+  locator.registerLazySingleton(() => GraphQlImpl(client: locator(), url: graphqlServerUrl));
   locator.registerLazySingleton(() => http.Client());
   locator.registerLazySingleton(() => SignUp(graphQl: locator<GraphQlImpl>()));
 }

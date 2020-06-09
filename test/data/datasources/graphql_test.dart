@@ -13,11 +13,11 @@ class MockHttpClient extends Mock implements http.Client {}
 void main() {
   GraphQl graphQl;
   MockHttpClient httpClient;
-  String url = 'http://192.168.43.231:3000/graphql';
+  String url = 'https://event-booking-graphql.herokuapp.com/graphql';
 
   setUp(() {
     httpClient = MockHttpClient();
-    graphQl = GraphQlImpl(client: httpClient);
+    graphQl = GraphQlImpl(client: httpClient, url: url);
   });
 
   group('GraphQl query', () {
