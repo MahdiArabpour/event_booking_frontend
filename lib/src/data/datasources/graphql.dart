@@ -13,7 +13,7 @@ abstract class GraphQl {
   Future<Map<String,dynamic>> send(String body, {String token = ''});
 }
 
-const url = 'http://localhost:3000/graphql';
+const url = 'http://192.168.43.231:3000/graphql';
 
 class GraphQlImpl implements GraphQl{
   final http.Client client;

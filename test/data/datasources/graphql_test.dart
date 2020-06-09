@@ -13,7 +13,7 @@ class MockHttpClient extends Mock implements http.Client {}
 void main() {
   GraphQl graphQl;
   MockHttpClient httpClient;
-  String url = 'http://localhost:3000/graphql';
+  String url = 'http://192.168.43.231:3000/graphql';
 
   setUp(() {
     httpClient = MockHttpClient();
