@@ -13,7 +13,8 @@ dependencies:
   built_value: ^7.1.0
   flutter_login: ^1.0.14
   http: ^0.12.1
-  equatable: ^0.4.0
+  equatable: ^1.2.0
+  flutter_bloc: ^4.0.0
   get_it: ^4.0.2
   dartz: ^0.9.1
   cupertino_icons: ^0.1.3

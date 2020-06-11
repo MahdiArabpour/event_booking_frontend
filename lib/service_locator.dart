@@ -13,7 +13,8 @@ const graphqlServerUrl = 'https://event-booking-graphql.herokuapp.com/graphql';
 void setupLocator() {
   locator.registerFactory(() => User());
   locator.registerFactory(() => Event());
-  locator.registerLazySingleton(() => GraphQlImpl(client: locator(), url: graphqlServerUrl));
+  locator.registerLazySingleton(
+      () => GraphQlImpl(client: locator(), url: graphqlServerUrl));
   locator.registerLazySingleton(() => http.Client());
   locator.registerLazySingleton(() => SignUp(graphQl: locator<GraphQlImpl>()));
 }

@@ -12,7 +12,7 @@ class SignUp {
   /// Sends user information to the graphql server to create new user account
   /// and if signup was successful returns created [User] Object!
   Future<User> call(String email, String password) async {
-    try{
+    try {
       final signUpQuery =
           'mutation{createUser(userInput: {email: "$email", password: "$password"}) {_id,email, }}';
 
@@ -21,8 +21,7 @@ class SignUp {
       final createdUserJson = resultJson['data']['createUser'];
 
       return User.fromJson(createdUserJson);
-    }
-    on ServerException {
+    } on ServerException {
       throw SignUpUserException();
     }
   }

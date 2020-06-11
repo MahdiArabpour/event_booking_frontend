@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of '../event.dart';
-
-// **************************************************************************
-// BuiltValueGenerator
-// **************************************************************************
 
 Serializer<Event> _$eventSerializer = new _$EventSerializer();
 
@@ -175,27 +169,39 @@ class EventBuilder implements Builder<Event, EventBuilder> {
   _$Event _$v;
 
   String _id;
+
   String get id => _$this._id;
+
   set id(String id) => _$this._id = id;
 
   String _title;
+
   String get title => _$this._title;
+
   set title(String title) => _$this._title = title;
 
   String _description;
+
   String get description => _$this._description;
+
   set description(String description) => _$this._description = description;
 
   double _price;
+
   double get price => _$this._price;
+
   set price(double price) => _$this._price = price;
 
   DateTime _date;
+
   DateTime get date => _$this._date;
+
   set date(DateTime date) => _$this._date = date;
 
   UserBuilder _creator;
+
   UserBuilder get creator => _$this._creator ??= new UserBuilder();
+
   set creator(UserBuilder creator) => _$this._creator = creator;
 
   EventBuilder();

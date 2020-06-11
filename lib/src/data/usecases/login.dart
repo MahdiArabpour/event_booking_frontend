@@ -1,3 +1,1 @@
-abstract class Login {
-
-}
+abstract class Login {}
