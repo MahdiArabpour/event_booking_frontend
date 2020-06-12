@@ -1,3 +1,5 @@
+import 'package:event_booking/core/utils/ui/validator.dart';
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
@@ -9,6 +11,7 @@ class TextInput extends StatelessWidget {
   final FocusNode focusNode;
   final double height;
   final Function onTap;
+  final Function validator;
 
   const TextInput({
     Key key,
@@ -20,6 +23,7 @@ class TextInput extends StatelessWidget {
     this.focusNode,
     this.height,
     this.onTap,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -39,6 +43,7 @@ class TextInput extends StatelessWidget {
           onFieldSubmitted: onSubmitted,
           autofocus: autoFocus,
           focusNode: focusNode,
+          validator: validator,
           onTap: onTap,
           decoration: InputDecoration(
             hintText: hintText,

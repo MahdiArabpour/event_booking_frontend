@@ -132,11 +132,6 @@ void main() {
         } catch (error) {
           expect(error.messages, expectedErrorList);
         }
-
-        expect(
-          () => login(email, password),
-          throwsA(TypeMatcher<LoginUserException>()),
-        );
       },
     );
   });

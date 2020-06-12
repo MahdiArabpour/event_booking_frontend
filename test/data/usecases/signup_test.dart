@@ -126,11 +126,6 @@ void main() {
         } catch (error) {
           expect(error.messages, expectedErrorList);
         }
-
-        expect(
-          () => signUp(email, password),
-          throwsA(TypeMatcher<SignUpUserException>()),
-        );
       },
     );
   });

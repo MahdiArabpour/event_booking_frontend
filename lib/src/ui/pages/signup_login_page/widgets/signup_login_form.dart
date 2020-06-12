@@ -1,8 +1,11 @@
+
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/ui/page_size.dart';
+import '../../../../../core/utils/ui/validator.dart';
 import '../../../global/widgets/button.dart';
 import '../../../global/widgets/text_input.dart';
 import '../bloc/signup_login_toggle_bloc/bloc.dart';
@@ -51,6 +54,8 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
 
   double confirmPasswordAnimationDirection;
 
+  Validator validator;
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +83,8 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
 
     _loginTextRecognizer = TapGestureRecognizer()
       ..onTap = _onSuggestionTextTapped;
+
+    validator = locator<Validator>();
   }
 
   void _slideAnimationListener() {
@@ -136,6 +143,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
           height: 50,
           hintText: 'Email',
           autoFocus: true,
+          validator: (email) => validator.validateEmail(email),
           focusNode: _emailFocus,
           textInputAction: TextInputAction.next,
           onSubmitted: (_) {
@@ -165,6 +173,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
                 height: 50,
                 hintText: 'Password',
                 focusNode: _passwordFocus,
+                validator: (password) => validator.validatePassword(password),
                 textInputAction:
                     _isLogin ? TextInputAction.done : TextInputAction.next,
                 onSubmitted: (_) {
@@ -215,10 +224,12 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
       ];
 
   void _onSubmitButtonTapped() {
-    if (_isLogin)
-      widget.onLogin();
-    else
-      widget.onSignUp();
+    if(formKey.currentState.validate()){
+      if (_isLogin)
+        widget.onLogin();
+      else
+        widget.onSignUp();
+    }
   }
 
   void _onSuggestionTextTapped() {
