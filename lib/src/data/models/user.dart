@@ -5,9 +5,10 @@ import 'package:built_value/serializer.dart';
 import './serializers.dart';
 import './event.dart';
 
-part 'generated_files/user.g.dart';
+part 'user.g.dart';
 
 abstract class User implements Built<User, UserBuilder> {
+  @BuiltValueField(wireName: '_id')
   String get id;
 
   String get email;
@@ -25,12 +26,7 @@ abstract class User implements Built<User, UserBuilder> {
   factory User([updates(UserBuilder b)]) = _$User;
 
   factory User.fromJson(Map<String, dynamic> jsonData) {
-    Map<String, dynamic> map = {
-      ...jsonData,
-      'id': jsonData['_id'],
-      '_id': null,
-    };
-    return serializers.deserializeWith(User.serializer, map);
+    return serializers.deserializeWith(User.serializer, jsonData);
   }
 
   Map<String, dynamic> toJson() =>

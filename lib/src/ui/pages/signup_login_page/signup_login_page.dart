@@ -8,33 +8,31 @@ import './widgets/signup_login_title.dart';
 
 class SignUpLoginPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MyScaffold(
-      appBarTitle: BlocBuilder(
-        bloc: context.bloc<ToggleBloc>(),
-        builder: (_, state) {
-          String title;
-          if (state is ToggleLoginState)
-            title = 'Login';
-          else if (state is ToggleSignUpState) title = 'SignUp';
-          return Text(title);
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 22.0,
-            ),
-            SignUpTitle(),
-            SignUpLoginForm(
-              onSignUp: () {},
-              onLogin: () {},
-            ),
-          ],
+  Widget build(BuildContext context) => MyScaffold(
+        appBarTitle: BlocBuilder(
+          bloc: context.bloc<ToggleBloc>(),
+          builder: (_, state) {
+            String title;
+            if (state is ToggleLoginState)
+              title = 'Login';
+            else if (state is ToggleSignUpState) title = 'SignUp';
+            return Text(title);
+          },
         ),
-      ),
-    );
-  }
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 22.0,
+              ),
+              SignUpTitle(),
+              SignUpLoginForm(
+                onSignUp: () {},
+                onLogin: () {},
+              ),
+            ],
+          ),
+        ),
+      );
 }

@@ -73,7 +73,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
         AnimationController(duration: Duration(milliseconds: 300), vsync: this);
     sizeAnimation = Tween(begin: 0.0, end: 50.0).animate(CurvedAnimation(
       parent: sizeAnimationController,
-      curve: Curves.fastOutSlowIn,
+      curve: Curves.fastLinearToSlowEaseIn,
     ));
 
     _loginTextRecognizer = TapGestureRecognizer()
@@ -119,7 +119,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
         ),
       );
 
-  _buildConfirmPasswordDismissible() => Dismissible(
+  Widget _buildConfirmPasswordDismissible() => Dismissible(
         key: Key('confirmPassword'),
         onDismissed: _onConfirmPasswordDismissed,
         child: TextInput(
@@ -131,7 +131,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
         ),
       );
 
-  _buildFormWidgets(BuildContext context) => [
+  List<Widget> _buildFormWidgets(BuildContext context) => [
         TextInput(
           height: 50,
           hintText: 'Email',
@@ -197,7 +197,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
                   Tween(begin: confirmPasswordAnimationDirection, end: 0.0)
                       .animate(CurvedAnimation(
                 parent: slideAnimationController,
-                curve: Curves.easeIn,
+                curve: Curves.fastLinearToSlowEaseIn,
               ));
               if (state is ToggleLoginState) {
                 questionText = "Don't have an account?";
@@ -214,21 +214,21 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
             }),
       ];
 
-  _onSubmitButtonTapped() {
+  void _onSubmitButtonTapped() {
     if (_isLogin)
       widget.onLogin();
     else
       widget.onSignUp();
   }
 
-  _onSuggestionTextTapped() {
+  void _onSuggestionTextTapped() {
     if (_isLogin)
       _insertConfirmPassword();
     else
       _removeConfirmPassword();
   }
 
-  _onConfirmPasswordDismissed(direction) {
+  void _onConfirmPasswordDismissed(direction) {
     if (direction == DismissDirection.startToEnd)
       confirmPasswordAnimationDirection =
           ConfirmPasswordAnimationDirection.startToEnd;
@@ -238,7 +238,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
     _removeConfirmPassword(isDismissed: true);
   }
 
-  _removeConfirmPassword({bool isDismissed = false}) {
+  void _removeConfirmPassword({bool isDismissed = false}) {
     toggleBloc.add(ToggleLoginEvent());
     if (isDismissed) {
       _formWidgets.remove(animatedConfirmPassword);
@@ -249,7 +249,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
           );
   }
 
-  _insertConfirmPassword() {
+  void _insertConfirmPassword() {
     _formWidgets.insert(4, animatedConfirmPassword);
     toggleBloc.add(ToggleSignUpEvent());
     sizeAnimationController.forward().then(
@@ -260,11 +260,9 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
   @override
   Widget build(BuildContext context) {
     toggleBloc = BlocProvider.of<ToggleBloc>(context);
-    PageSize pageSize = PageSize(context);
-
     if (!_didRebuild) {
       animatedConfirmPassword =
-          _buildAnimatedConfirmPassword(pageSize.deviceWidth);
+          _buildAnimatedConfirmPassword(PageSize(context).deviceWidth);
       _formWidgets = _buildFormWidgets(context);
       _didRebuild = true;
     }
@@ -296,6 +294,6 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
 }
 
 abstract class ConfirmPasswordAnimationDirection {
-  static const double startToEnd = 1.5;
-  static const double endToStart = -1.5;
+  static const double startToEnd = 2.0;
+  static const double endToStart = -2.0;
 }

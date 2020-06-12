@@ -6,6 +6,7 @@ import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/datasources/graphql.dart';
 import 'package:event_booking/src/data/models/user.dart';
 import 'package:event_booking/src/data/usecases/signup.dart';
+import 'package:event_booking/core/utils/graphql/queries.dart' as graphql_query;
 
 class MockGraphQl extends Mock implements GraphQl {}
 
@@ -21,8 +22,7 @@ void main() {
   group('SignUp', () {
     final email = 'test1@test.com';
     final password = 'test';
-    final signUpQuery =
-        'mutation{createUser(userInput: {email: "$email", password: "$password"}) {_id,email, }}';
+    final signUpQuery = graphql_query.signUp(email, password);
 
     test(
       'sends signup information to the graphql server',
@@ -72,6 +72,60 @@ void main() {
       () async {
         when(graphQl.send(any))
             .thenThrow(ServerException(message: 'User already exists'));
+
+        expect(
+          () => signUp(email, password),
+          throwsA(TypeMatcher<SignUpUserException>()),
+        );
+      },
+    );
+
+    test(
+      'Throws a SignupException when the status code is 200 but body contains some errors',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "errors": [
+                {
+                  "message": "User already Exists",
+                  "locations": [
+                    {"line": 1, "column": 10}
+                  ],
+                  "path": ["createUser"]
+                }
+              ],
+              "data": {"createUser": null}
+            });
+
+        expect(
+          () => signUp(email, password),
+          throwsA(TypeMatcher<SignUpUserException>()),
+        );
+      },
+    );
+
+    test(
+      'Throws a SignupException with the currect List of errorMessages',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "errors": [
+                {
+                  "message": "User already Exists",
+                  "locations": [
+                    {"line": 1, "column": 10}
+                  ],
+                  "path": ["createUser"]
+                }
+              ],
+              "data": {"createUser": null}
+            });
+
+        final expectedErrorList = ["User already Exists"];
+
+        try {
+          await signUp(email, password);
+        } catch (error) {
+          expect(error.messages, expectedErrorList);
+        }
 
         expect(
           () => signUp(email, password),

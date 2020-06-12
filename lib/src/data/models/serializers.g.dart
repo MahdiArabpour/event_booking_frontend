@@ -1,6 +1,13 @@
-part of '../serializers.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'serializers.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(AuthData.serializer)
       ..add(Event.serializer)
       ..add(User.serializer)
       ..addBuilderFactory(

@@ -1,4 +1,10 @@
-part of '../user.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'user.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
 
 Serializer<User> _$userSerializer = new _$UserSerializer();
 
@@ -12,7 +18,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
   Iterable<Object> serialize(Serializers serializers, User object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
+      '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'email',
       serializers.serialize(object.email,
@@ -45,7 +51,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
+        case '_id':
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
@@ -132,28 +138,20 @@ class UserBuilder implements Builder<User, UserBuilder> {
   _$User _$v;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   String _email;
-
   String get email => _$this._email;
-
   set email(String email) => _$this._email = email;
 
   String _password;
-
   String get password => _$this._password;
-
   set password(String password) => _$this._password = password;
 
   ListBuilder<Event> _createdEvents;
-
   ListBuilder<Event> get createdEvents =>
       _$this._createdEvents ??= new ListBuilder<Event>();
-
   set createdEvents(ListBuilder<Event> createdEvents) =>
       _$this._createdEvents = createdEvents;
 

@@ -4,7 +4,7 @@ import 'package:built_value/serializer.dart';
 import './serializers.dart';
 import './user.dart';
 
-part 'generated_files/event.g.dart';
+part 'event.g.dart';
 
 abstract class Event implements Built<Event, EventBuilder> {
   String get id;

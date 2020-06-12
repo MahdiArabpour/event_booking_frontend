@@ -6,4 +6,14 @@ class ServerException implements Exception {
   ServerException({@required this.message});
 }
 
-class SignUpUserException implements Exception {}
+class SignUpUserException implements Exception {
+  final List<String> messages;
+
+  SignUpUserException([this.messages]);
+}
+
+class LoginUserException implements Exception {
+  final List<String> messages;
+
+  LoginUserException([this.messages]);
+}
