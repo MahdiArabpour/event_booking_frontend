@@ -10,20 +10,17 @@ class SignUpLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      appBar: AppBar(
-        title: BlocBuilder(
-          bloc: context.bloc<ToggleBloc>(),
-          builder: (_, state) {
-            String title;
-            if (state is ToggleLoginState)
-              title = 'Login';
-            else if (state is ToggleSignUpState) title = 'SignUp';
-            return Text(title);
-          },
-        ),
-        centerTitle: true,
+      appBarTitle: BlocBuilder(
+        bloc: context.bloc<ToggleBloc>(),
+        builder: (_, state) {
+          String title;
+          if (state is ToggleLoginState)
+            title = 'Login';
+          else if (state is ToggleSignUpState) title = 'SignUp';
+          return Text(title);
+        },
       ),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

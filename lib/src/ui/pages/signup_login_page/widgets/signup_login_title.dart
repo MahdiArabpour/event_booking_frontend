@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/utils/page_size.dart';
+import '../../../../../core/utils/ui/page_size.dart';
 
 class SignUpTitle extends StatelessWidget {
   @override

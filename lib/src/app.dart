@@ -19,7 +19,7 @@ class App extends StatelessWidget {
           button: TextStyle(fontFamily: 'OpenSans', color: Colors.white),
         ),
       ),
-      home: BlocProvider(
+      home: BlocProvider<ToggleBloc>(
         create: (_) => ToggleBloc(),
         child: SignUpLoginPage(),
       ),

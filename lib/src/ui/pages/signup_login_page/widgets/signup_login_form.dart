@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/utils/ui/page_size.dart';
 import '../../../global/widgets/button.dart';
 import '../../../global/widgets/text_input.dart';
 import '../bloc/signup_login_toggle_bloc/bloc.dart';
@@ -21,172 +22,276 @@ class SignUpLoginForm extends StatefulWidget {
 }
 
 class _SignUpLoginFormState extends State<SignUpLoginForm>
-    with SingleTickerProviderStateMixin {
-  GlobalKey<AnimatedListState> animatedListKey;
+    with TickerProviderStateMixin {
+  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   TapGestureRecognizer _loginTextRecognizer;
-  List<Widget> loginFormWidgets;
-  bool _isSignUp;
+
+  List<Widget> _formWidgets;
+
+  Widget animatedConfirmPassword;
+
+  Animation slideAnimation;
+  Animation sizeAnimation;
+
+  AnimationController slideAnimationController;
+  AnimationController sizeAnimationController;
+
+  FocusNode _emailFocus;
+  FocusNode _passwordFocus;
+  FocusNode _confirmPasswordFocus;
+
+  Bloc toggleBloc;
+
+  String questionText;
+  String suggestionText;
+
+  bool _isLogin = true;
+  bool _didRebuild = false;
+
   double confirmPasswordAnimationDirection;
-  Bloc<ToggleEvent, ToggleState> toggleBloc;
 
   @override
   void initState() {
     super.initState();
 
-    animatedListKey = GlobalKey<AnimatedListState>();
-
-    _loginTextRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        _toggleLoginAndSignUp();
-      };
-
-    _isSignUp = false;
     confirmPasswordAnimationDirection =
         ConfirmPasswordAnimationDirection.startToEnd;
 
-    confirmPassword = Dismissible(
-      key: Key('confirmPassword'),
-      onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd)
-          confirmPasswordAnimationDirection =
-              ConfirmPasswordAnimationDirection.startToEnd;
-        else
-          confirmPasswordAnimationDirection =
-              ConfirmPasswordAnimationDirection.endToStart;
-        _removeConfirmPassword();
-        _isSignUp = false;
-      },
-      confirmDismiss: (_) async => true,
-      child: const TextInput(
-        hintText: 'Confirm Password',
-      ),
-    );
+    questionText = "Don't have an account?";
+    suggestionText = "Sign Up";
+
+    _emailFocus = FocusNode();
+    _passwordFocus = FocusNode();
+    _confirmPasswordFocus = FocusNode();
+
+    slideAnimationController =
+        AnimationController(duration: Duration(milliseconds: 300), vsync: this)
+          ..addListener(_slideAnimationListener);
+
+    sizeAnimationController =
+        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+    sizeAnimation = Tween(begin: 0.0, end: 50.0).animate(CurvedAnimation(
+      parent: sizeAnimationController,
+      curve: Curves.fastOutSlowIn,
+    ));
+
+    _loginTextRecognizer = TapGestureRecognizer()
+      ..onTap = _onSuggestionTextTapped;
   }
 
-  Widget confirmPassword;
+  void _slideAnimationListener() {
+    if (slideAnimationController.isDismissed) {
+      sizeAnimationController.reverse();
+    } else if (slideAnimationController.isCompleted) {}
+  }
+
+  Widget _buildAnimatedConfirmPassword(deviceWidth) => AnimatedBuilder(
+        animation: slideAnimationController,
+        builder: (_, __) {
+          return AnimatedBuilder(
+            animation: sizeAnimationController,
+            builder: (_, __) {
+              return Transform(
+                transform: Matrix4.translationValues(
+                    slideAnimation.value * deviceWidth, 0.0, 0.0),
+                child: _buildConfirmPasswordDismissible(),
+              );
+            },
+          );
+        },
+      );
+
+  Widget _buildSuggestion(String questionText, String suggestionText) =>
+      RichText(
+        text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: [
+            TextSpan(text: '$questionText '),
+            TextSpan(
+              text: suggestionText,
+              style: TextStyle(
+                color: Colors.blue,
+              ),
+              recognizer: _loginTextRecognizer,
+            ),
+          ],
+        ),
+      );
+
+  _buildConfirmPasswordDismissible() => Dismissible(
+        key: Key('confirmPassword'),
+        onDismissed: _onConfirmPasswordDismissed,
+        child: TextInput(
+          height: sizeAnimation.value,
+          hintText: 'Confirm Password',
+          focusNode: _confirmPasswordFocus,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) {},
+        ),
+      );
+
+  _buildFormWidgets(BuildContext context) => [
+        TextInput(
+          height: 50,
+          hintText: 'Email',
+          autoFocus: true,
+          focusNode: _emailFocus,
+          textInputAction: TextInputAction.next,
+          onSubmitted: (_) {
+            _emailFocus.unfocus();
+            FocusScope.of(context).requestFocus(_passwordFocus);
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        BlocConsumer(
+            // build method return value
+            bloc: toggleBloc,
+            listener: (_, __) async {
+              if (_passwordFocus.hasFocus) {
+                _passwordFocus.unfocus();
+                await Future.delayed(Duration(milliseconds: 100));
+                FocusScope.of(context).requestFocus(_passwordFocus);
+              } else if (_confirmPasswordFocus.hasFocus) {
+                _confirmPasswordFocus.unfocus();
+                await Future.delayed(Duration(milliseconds: 100));
+                FocusScope.of(context).requestFocus(_passwordFocus);
+              }
+            },
+            builder: (_, state) {
+              return TextInput(
+                height: 50,
+                hintText: 'Password',
+                focusNode: _passwordFocus,
+                textInputAction:
+                    _isLogin ? TextInputAction.done : TextInputAction.next,
+                onSubmitted: (_) {
+                  _passwordFocus.unfocus();
+                  if (!_isLogin)
+                    FocusScope.of(context).requestFocus(_confirmPasswordFocus);
+                },
+              );
+            }),
+        const SizedBox(
+          height: 10,
+        ),
+//      animatedConfirmPassword,
+        const SizedBox(
+          height: 10,
+        ),
+        Button(
+          onTap: _onSubmitButtonTapped,
+          text: 'Submit',
+          height: 45.0,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        BlocConsumer(
+            // build method return value
+            bloc: toggleBloc,
+            listener: (_, state) {
+              slideAnimation =
+                  Tween(begin: confirmPasswordAnimationDirection, end: 0.0)
+                      .animate(CurvedAnimation(
+                parent: slideAnimationController,
+                curve: Curves.easeIn,
+              ));
+              if (state is ToggleLoginState) {
+                questionText = "Don't have an account?";
+                suggestionText = "Sign Up";
+                _isLogin = true;
+              } else if (state is ToggleSignUpState) {
+                questionText = "Have an account?";
+                suggestionText = "Login";
+                _isLogin = false;
+              }
+            },
+            builder: (_, state) {
+              return _buildSuggestion(questionText, suggestionText);
+            }),
+      ];
+
+  _onSubmitButtonTapped() {
+    if (_isLogin)
+      widget.onLogin();
+    else
+      widget.onSignUp();
+  }
+
+  _onSuggestionTextTapped() {
+    if (_isLogin)
+      _insertConfirmPassword();
+    else
+      _removeConfirmPassword();
+  }
+
+  _onConfirmPasswordDismissed(direction) {
+    if (direction == DismissDirection.startToEnd)
+      confirmPasswordAnimationDirection =
+          ConfirmPasswordAnimationDirection.startToEnd;
+    if (direction == DismissDirection.endToStart)
+      confirmPasswordAnimationDirection =
+          ConfirmPasswordAnimationDirection.endToStart;
+    _removeConfirmPassword(isDismissed: true);
+  }
+
+  _removeConfirmPassword({bool isDismissed = false}) {
+    toggleBloc.add(ToggleLoginEvent());
+    if (isDismissed) {
+      _formWidgets.remove(animatedConfirmPassword);
+      slideAnimationController.reverse();
+    } else
+      slideAnimationController.reverse().then(
+            (value) => _formWidgets.remove(animatedConfirmPassword),
+          );
+  }
+
+  _insertConfirmPassword() {
+    _formWidgets.insert(4, animatedConfirmPassword);
+    toggleBloc.add(ToggleSignUpEvent());
+    sizeAnimationController.forward().then(
+          (value) => slideAnimationController.forward(),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    toggleBloc = context.bloc<ToggleBloc>();
+    toggleBloc = BlocProvider.of<ToggleBloc>(context);
+    PageSize pageSize = PageSize(context);
 
-    loginFormWidgets = [
-      const TextInput(
-        hintText: 'Email',
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      const TextInput(
-        hintText: 'Password',
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-//      confirmPassword,
-      const SizedBox(
-        height: 10,
-      ),
-      Button(
-        onTap: _onSubmitButtonTapped,
-        text: 'Submit',
-        height: 45.0,
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      BlocBuilder(
+    if (!_didRebuild) {
+      animatedConfirmPassword =
+          _buildAnimatedConfirmPassword(pageSize.deviceWidth);
+      _formWidgets = _buildFormWidgets(context);
+      _didRebuild = true;
+    }
+    return BlocBuilder(
+        // build method return value
         bloc: toggleBloc,
-        builder: (context, state) {
-          String questionText;
-          String suggestionText;
-
-          switch (state.runtimeType) {
-            case ToggleSignUpState:
-              questionText = "Have an account? ";
-              suggestionText = "Login";
-              break;
-            case ToggleLoginState:
-              questionText = "Don't have an account? ";
-              suggestionText = "Sign Up";
-              break;
-          }
-
-          return RichText(
-            text: TextSpan(
-              style: DefaultTextStyle.of(context).style,
-              children: [
-                TextSpan(text: questionText),
-                TextSpan(
-                  text: suggestionText,
-                  style: TextStyle(
-                    color: Colors.blue,
-                  ),
-                  recognizer: _loginTextRecognizer,
-                ),
-              ],
+        builder: (_, state) {
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _formWidgets,
+              ),
             ),
           );
-        },
-      ),
-    ];
-
-    return Container(
-      height: 300,
-      padding: EdgeInsets.all(20),
-      child: AnimatedList(
-        physics: NeverScrollableScrollPhysics(),
-        key: animatedListKey,
-        initialItemCount: loginFormWidgets.length,
-        itemBuilder: _buildAnimatedListItem,
-      ),
-    );
+        });
   }
 
-  void _onSubmitButtonTapped() {
-    if (_isSignUp)
-      widget.onSignUp();
-    else
-      widget.onLogin();
-  }
-
-  Widget _buildAnimatedListItem(context, index, animation) => SlideTransition(
-        position: Tween(
-                begin: Offset(confirmPasswordAnimationDirection, 0.0),
-                end: Offset.zero)
-            .animate(animation),
-        child: loginFormWidgets.elementAt(index),
-      );
-
-  void _toggleLoginAndSignUp() {
-    if (_isSignUp) {
-      confirmPasswordAnimationDirection =
-          ConfirmPasswordAnimationDirection.startToEnd;
-      _removeConfirmPassword();
-    } else
-      _addConfirmPassword();
-    _isSignUp = !_isSignUp;
-  }
-
-  void _removeConfirmPassword() {
-    toggleBloc.add(ToggleLoginEvent());
-    var removed =
-        loginFormWidgets.removeAt(loginFormWidgets.indexOf(confirmPassword));
-    animatedListKey.currentState.removeItem(
-        4,
-        (context, animation) => SlideTransition(
-              position: Tween(
-                      begin: Offset(
-                          ConfirmPasswordAnimationDirection.startToEnd, 0.0),
-                      end: Offset.zero)
-                  .animate(animation),
-              child: removed,
-            ));
-  }
-
-  void _addConfirmPassword() {
-    toggleBloc.add(ToggleSignUpEvent());
-    loginFormWidgets.insert(4, confirmPassword);
-    animatedListKey.currentState.insertItem(4);
+  @override
+  void dispose() {
+    super.dispose();
+    slideAnimationController.dispose();
+    sizeAnimationController.dispose();
+    toggleBloc.close();
   }
 }
 
