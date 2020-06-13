@@ -16,6 +16,7 @@ class Login {
         final messages = errors.messages;
         final thereIsAMessage = messages != null && messages.length >= 1;
         if(thereIsAMessage &&  messages[0] == ServerErrorMessages.USER_DOES_NOT_EXIST) throw UserDoesNotExistException();
+        if(thereIsAMessage &&  messages[0] == ServerErrorMessages.INCORRECT_PASSWORD) throw IncorrectPasswordException();
         throw UnknownServerException();
       }
   }

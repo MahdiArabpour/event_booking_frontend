@@ -1,3 +1,4 @@
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,8 +6,12 @@ import '../../global/widgets/my_scaffold.dart';
 import './bloc/auth_toggle_bloc/bloc.dart';
 import './widgets/auth_form.dart';
 import './widgets/auth_page_title.dart';
+import './bloc/submit_bloc/bloc.dart';
 
 class AuthPage extends StatelessWidget {
+
+  final submitBloc = locator<SubmitBloc>();
+
   @override
   Widget build(BuildContext context) => MyScaffold(
         appBarTitle: BlocBuilder(
@@ -28,11 +33,19 @@ class AuthPage extends StatelessWidget {
               ),
               AuthPageTitle(),
               AuthForm(
-                onSignUp: () {},
-                onLogin: () {},
+                onSignUp: _onSignUp,
+                onLogin: _onLogin,
               ),
             ],
           ),
         ),
       );
+
+  void _onSignUp(String email, String password){
+    submitBloc.add(SignUpEvent(email, password));
+  }
+
+  void _onLogin(String email, String password){
+    submitBloc.add(LoginEvent(email, password));
+  }
 }

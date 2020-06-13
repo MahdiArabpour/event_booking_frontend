@@ -30,8 +30,8 @@ class EventBookingRepositoryImpl implements EventBookingRepository {
       final createdAuthDataJson = resultJson['data']['login'];
 
       return AuthData.fromJson(createdAuthDataJson);
-    } on ServerException {
-      throw LoginUserException();
+    } on ServerException catch (error) {
+      throw LoginUserException([error.message]);
     }
   }
 
@@ -52,8 +52,8 @@ class EventBookingRepositoryImpl implements EventBookingRepository {
       final createdUserJson = resultJson['data']['createUser'];
 
       return User.fromJson(createdUserJson);
-    } on ServerException {
-      throw SignUpUserException();
+    } on ServerException catch (error) {
+      throw SignUpUserException([error.message]);
     }
   }
 }

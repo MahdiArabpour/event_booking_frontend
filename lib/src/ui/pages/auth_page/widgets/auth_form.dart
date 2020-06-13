@@ -1,4 +1,7 @@
+import 'package:event_booking/core/utils/ui/ui_messages.dart';
 import 'package:event_booking/service_locator.dart';
+import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
+import 'package:event_booking/src/ui/pages/dashboard-page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,8 +13,8 @@ import '../../../global/widgets/text_input.dart';
 import '../bloc/auth_toggle_bloc/bloc.dart';
 
 class AuthForm extends StatefulWidget {
-  final Function onSignUp;
-  final Function onLogin;
+  final Function(String email, String password) onSignUp;
+  final Function(String email, String password) onLogin;
 
   const AuthForm({
     Key key,
@@ -23,8 +26,7 @@ class AuthForm extends StatefulWidget {
   _AuthFormState createState() => _AuthFormState();
 }
 
-class _AuthFormState extends State<AuthForm>
-    with TickerProviderStateMixin {
+class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TapGestureRecognizer _loginTextRecognizer;
@@ -43,6 +45,7 @@ class _AuthFormState extends State<AuthForm>
   FocusNode _passwordFocus;
   FocusNode _confirmPasswordFocus;
 
+  TextEditingController _emailController;
   TextEditingController _passwordController;
 
   Bloc toggleBloc;
@@ -71,6 +74,7 @@ class _AuthFormState extends State<AuthForm>
     _passwordFocus = FocusNode();
     _confirmPasswordFocus = FocusNode();
 
+    _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
     slideAnimationController =
@@ -149,6 +153,7 @@ class _AuthFormState extends State<AuthForm>
         TextInput(
           height: 50,
           hintText: 'Email',
+          controller: _emailController,
           autoFocus: true,
           validator: (email) => validator.validateEmail(email),
           focusNode: _emailFocus,
@@ -199,11 +204,7 @@ class _AuthFormState extends State<AuthForm>
         const SizedBox(
           height: 10,
         ),
-        Button(
-          onTap: _onSubmitButtonTapped,
-          text: 'Submit',
-          height: 45.0,
-        ),
+        _buildSubmitButton(context),
         const SizedBox(
           height: 10,
         ),
@@ -235,9 +236,9 @@ class _AuthFormState extends State<AuthForm>
   void _onSubmitButtonTapped() {
     if (formKey.currentState.validate()) {
       if (_isLogin)
-        widget.onLogin();
+        widget.onLogin(_emailController.text, _passwordController.text);
       else
-        widget.onSignUp();
+        widget.onSignUp(_emailController.text, _passwordController.text);
     }
   }
 
@@ -276,6 +277,50 @@ class _AuthFormState extends State<AuthForm>
           (value) => slideAnimationController.forward(),
         );
   }
+
+  _buildSubmitButton(BuildContext context) =>
+      BlocConsumer<SubmitBloc, SubmitState>(
+        bloc: context.bloc<SubmitBloc>(),
+        listener: (context, state) {
+          final snackBar = MySnackBar(
+            context: context,
+            color: Colors.red,
+          );
+          final toast = Toast();
+          if (state is UserNotExisting)
+            snackBar.show('User Not Found, Please sign up first.');
+          else if (state is UserAlreadyExists)
+            snackBar.show('User Already Exists, Please login.');
+          else if (state is IncorrectPassword)
+            snackBar.show('Password is incorrect.');
+          else if (state is SignedUp) toast.show('Signed up, please waite.', length: ToastLength.SHORT);
+          else if (state is LoggedIn){
+            toast.show("Welcome. You're all set.");
+            Navigator.of(context).pushReplacementNamed(DashboardPage.routeName);
+          }
+          else if (state is UnknownError) snackBar.show('An unknown error occured');
+        },
+        builder: (context, state) {
+          bool isLoading = state is Loading;
+          return Button(
+            onTap: _onSubmitButtonTapped,
+            child: isLoading
+                ? Center(
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                )
+                : Text(
+                    'Submit',
+                    style: Theme.of(context).textTheme.button,
+                  ),
+            height: 45.0,
+          );
+        },
+      );
 
   @override
   Widget build(BuildContext context) {

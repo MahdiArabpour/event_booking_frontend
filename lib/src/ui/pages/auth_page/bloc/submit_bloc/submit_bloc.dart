@@ -50,7 +50,9 @@ class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
       yield LoggedIn();
     }on UserDoesNotExistException{
       yield UserNotExisting();
-    }on UnknownServerException{
+    } on IncorrectPasswordException{
+      yield IncorrectPassword();
+    } on UnknownServerException{
       yield UnknownError();
     }
   }

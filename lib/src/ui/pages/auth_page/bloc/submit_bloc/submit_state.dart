@@ -32,6 +32,11 @@ class UserAlreadyExists extends SubmitState{
   List<Object> get props => const [];
 }
 
+class IncorrectPassword extends SubmitState{
+  @override
+  List<Object> get props => const [];
+}
+
 class UnknownError extends SubmitState{
   @override
   List<Object> get props => const [];

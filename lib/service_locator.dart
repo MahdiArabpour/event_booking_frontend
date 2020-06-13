@@ -1,4 +1,5 @@
 
+import 'package:event_booking/src/ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,6 +30,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => Validator());
   locator.registerLazySingleton(() => AppBar());
   locator.registerLazySingleton(() => FlutterSecureStorage());
+  locator.registerLazySingleton(() => ToggleBloc());
   locator.registerLazySingleton(() => SubmitBloc(
     signUp: locator(),
     login: locator(),

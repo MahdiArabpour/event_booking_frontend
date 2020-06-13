@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   final Function onTap;
-  final String text;
+  final Widget child;
   final double height;
 
   const Button({
     Key key,
     @required this.onTap,
-    this.text = '',
+    @required this.child,
     this.height,
   }) : super(key: key);
 
@@ -30,10 +30,7 @@ class Button extends StatelessWidget {
           ),
           padding: EdgeInsets.all(8.0),
           child: Center(
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.button,
-            ),
+            child: child,
           ),
         ),
       ),

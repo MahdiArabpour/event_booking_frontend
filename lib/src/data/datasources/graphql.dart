@@ -42,7 +42,8 @@ class GraphQlImpl implements GraphQl {
         response.statusCode == 200 || response.statusCode == 201;
 
     if (isSuccessful) {
-      return json.decode(response.body);
+      final jsonResult = json.decode(response.body);
+      return jsonResult;
     }
 
     throw ServerException(message: response.body);

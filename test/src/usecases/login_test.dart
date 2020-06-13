@@ -76,6 +76,19 @@ void main() {
   );
 
   test(
+    "Throws an IncorrectPasswordException when the server response is incorrect password",
+    () async {
+      when(repository.login(any, any))
+          .thenThrow(LoginUserException(["Password is incorrect!"]));
+
+      expect(
+        () => login(email, password),
+        throwsA(TypeMatcher<IncorrectPasswordException>()),
+      );
+    },
+  );
+
+  test(
     'Throws an UnknownServerException when there is an unknown error',
     () async {
       when(repository.login(any, any)).thenThrow(LoginUserException());
