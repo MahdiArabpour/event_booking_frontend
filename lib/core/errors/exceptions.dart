@@ -17,3 +17,9 @@ class LoginUserException implements Exception {
 
   LoginUserException([this.messages]);
 }
+
+class EmptyQueryException {
+  final String message;
+
+  EmptyQueryException([this.message]);
+}

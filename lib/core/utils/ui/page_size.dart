@@ -1,3 +1,4 @@
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class PageSize {
@@ -13,7 +14,7 @@ class PageSize {
     deviceHeight = mediaQuery.size.height;
     deviceWidth = mediaQuery.size.width;
     topPadding = mediaQuery.padding.top;
-    final myAppBar = AppBar();
+    final myAppBar = locator<AppBar>();
     appBar = myAppBar.preferredSize.height;
     bodyHeight = deviceHeight - topPadding - appBar;
   }

@@ -22,4 +22,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => SignUp(graphQl: locator<GraphQlImpl>()));
   locator.registerLazySingleton(() => Login(graphQl: locator<GraphQlImpl>()));
   locator.registerLazySingleton(() => Validator());
+  locator.registerLazySingleton(() => AppBar());
 }

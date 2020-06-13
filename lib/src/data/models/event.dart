@@ -7,6 +7,7 @@ import './user.dart';
 part 'event.g.dart';
 
 abstract class Event implements Built<Event, EventBuilder> {
+  @BuiltValueField(wireName: '_id')
   String get id;
 
   String get title;
@@ -17,6 +18,7 @@ abstract class Event implements Built<Event, EventBuilder> {
 
   DateTime get date;
 
+  @nullable
   User get creator;
 
   Event._();

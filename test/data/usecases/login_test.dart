@@ -129,7 +129,7 @@ void main() {
 
         try {
           await login(email, password);
-        } catch (error) {
+        } on LoginUserException catch (error) {
           expect(error.messages, expectedErrorList);
         }
       },

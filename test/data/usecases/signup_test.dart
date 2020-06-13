@@ -6,7 +6,8 @@ import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/datasources/graphql.dart';
 import 'package:event_booking/src/data/models/user.dart';
 import 'package:event_booking/src/data/usecases/signup.dart';
-import 'package:event_booking/core/utils/graphql/queries.dart' as graphql_query;
+import 'package:event_booking/core/utils/graphql/mutations.dart'
+    as graphql_mutation;
 
 class MockGraphQl extends Mock implements GraphQl {}
 
@@ -22,7 +23,7 @@ void main() {
   group('SignUp', () {
     final email = 'test1@test.com';
     final password = 'test';
-    final signUpQuery = graphql_query.signUp(email, password);
+    final signUpQuery = graphql_mutation.signUp(email, password);
 
     test(
       'sends signup information to the graphql server',
@@ -123,7 +124,7 @@ void main() {
 
         try {
           await signUp(email, password);
-        } catch (error) {
+        } on SignUpUserException catch (error) {
           expect(error.messages, expectedErrorList);
         }
       },

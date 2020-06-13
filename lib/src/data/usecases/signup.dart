@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import '../datasources/graphql.dart';
 import '../models/user.dart';
 import '../../../core/errors/exceptions.dart';
-import '../../../core/utils/graphql/queries.dart' as graphql_query;
+import '../../../core/utils/graphql/mutations.dart' as graphql_mutation;
 
 class SignUp {
   final GraphQl graphQl;
@@ -14,7 +14,7 @@ class SignUp {
   /// and if signup was successful returns created [User] Object!
   Future<User> call(String email, String password) async {
     try {
-      final signUpQuery = graphql_query.signUp(email, password);
+      final signUpQuery = graphql_mutation.signUp(email, password);
 
       final resultJson = await graphQl.send(signUpQuery);
 
