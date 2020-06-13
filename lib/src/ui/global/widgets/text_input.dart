@@ -1,5 +1,3 @@
-import 'package:event_booking/core/utils/ui/validator.dart';
-import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {

@@ -23,7 +23,7 @@ String getEvents({
   if (fields.isEmpty)
     throw EmptyQueryException('getEvent() query must have at least 1 argument');
 
-  return 'query{events{${_generateFieldsString(fields)}}}';
+  return 'query{events{${fields.join(',')}}}';
 }
 
 String getBookings({
@@ -45,16 +45,5 @@ String getBookings({
     throw EmptyQueryException(
         'getBookings() query must have at least 1 argument');
 
-  return 'query{bookings{${_generateFieldsString(fields)}}}';
-}
-
-String _generateFieldsString(List<String> fields) {
-  final fieldsBuffer = StringBuffer();
-
-  for (var i = 0; i < fields.length; i++) {
-    fieldsBuffer.write(fields[i]);
-    if (i != fields.length - 1) fieldsBuffer.write(',');
-  }
-
-  return '$fieldsBuffer';
+  return 'query{bookings{${fields.join(',')}}}';
 }
