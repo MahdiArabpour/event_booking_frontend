@@ -8,8 +8,7 @@ import '../../repositories/event_booking_repository.dart';
 import '../../../core/utils/graphql/queries.dart' as graphql_query;
 import '../../../core/utils/graphql/mutations.dart' as graphql_mutation;
 
-class EventBookingRepositoryImpl implements EventBookingRepository{
-
+class EventBookingRepositoryImpl implements EventBookingRepository {
   final GraphQl graphQl;
 
   EventBookingRepositoryImpl({@required this.graphQl});
@@ -24,7 +23,7 @@ class EventBookingRepositoryImpl implements EventBookingRepository{
       if (resultJson['errors'] != null) {
         List<Map<String, dynamic>> errors = resultJson['errors'];
         List<String> errorMessages =
-        errors.map((e) => e['message'] as String).toList();
+            errors.map((e) => e['message'] as String).toList();
         throw LoginUserException(errorMessages);
       }
 
@@ -46,7 +45,7 @@ class EventBookingRepositoryImpl implements EventBookingRepository{
       if (resultJson['errors'] != null) {
         List<Map<String, dynamic>> errors = resultJson['errors'];
         List<String> errorMessages =
-        errors.map((e) => e['message'] as String).toList();
+            errors.map((e) => e['message'] as String).toList();
         throw SignUpUserException(errorMessages);
       }
 
@@ -57,5 +56,4 @@ class EventBookingRepositoryImpl implements EventBookingRepository{
       throw SignUpUserException();
     }
   }
-
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../global/widgets/my_scaffold.dart';
-import './bloc/signup_login_toggle_bloc/bloc.dart';
-import './widgets/signup_login_form.dart';
-import './widgets/signup_login_title.dart';
+import './bloc/auth_toggle_bloc/bloc.dart';
+import './widgets/auth_form.dart';
+import './widgets/auth_page_title.dart';
 
-class SignUpLoginPage extends StatelessWidget {
+class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MyScaffold(
         appBarTitle: BlocBuilder(
@@ -26,8 +26,8 @@ class SignUpLoginPage extends StatelessWidget {
               const SizedBox(
                 height: 22.0,
               ),
-              SignUpTitle(),
-              SignUpLoginForm(
+              AuthPageTitle(),
+              AuthForm(
                 onSignUp: () {},
                 onLogin: () {},
               ),

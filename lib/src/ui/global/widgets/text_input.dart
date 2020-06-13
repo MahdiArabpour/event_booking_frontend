@@ -10,6 +10,7 @@ class TextInput extends StatelessWidget {
   final double height;
   final Function onTap;
   final Function validator;
+  final bool isPassword;
 
   const TextInput({
     Key key,
@@ -22,6 +23,7 @@ class TextInput extends StatelessWidget {
     this.height,
     this.onTap,
     this.validator,
+    this.isPassword = false,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class TextInput extends StatelessWidget {
           focusNode: focusNode,
           validator: validator,
           onTap: onTap,
+          obscureText: isPassword,
           decoration: InputDecoration(
             hintText: hintText,
             border: InputBorder.none,

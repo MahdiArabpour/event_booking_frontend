@@ -1,4 +1,3 @@
-import 'package:event_booking/src/data/models/user.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:matcher/matcher.dart';
@@ -7,6 +6,7 @@ import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/datasources/graphql.dart';
 import 'package:event_booking/src/data/models/auth_data.dart';
 import 'package:event_booking/src/data/repositories/event_booking_repository_impl.dart';
+import 'package:event_booking/src/data/models/user.dart';
 import 'package:event_booking/core/utils/graphql/queries.dart' as graphql_query;
 import 'package:event_booking/core/utils/graphql/mutations.dart'
     as graphql_mutation;
@@ -113,7 +113,7 @@ void main() {
     );
 
     test(
-      'Throws a LoginUserError with the currect List of errorMessages',
+      'Throws a LoginUserException with the currect List of errorMessages',
       () async {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "errors": [

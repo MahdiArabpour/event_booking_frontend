@@ -1,4 +1,3 @@
-
 import 'package:event_booking/service_locator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,23 +7,23 @@ import '../../../../../core/utils/ui/page_size.dart';
 import '../../../../../core/utils/ui/validator.dart';
 import '../../../global/widgets/button.dart';
 import '../../../global/widgets/text_input.dart';
-import '../bloc/signup_login_toggle_bloc/bloc.dart';
+import '../bloc/auth_toggle_bloc/bloc.dart';
 
-class SignUpLoginForm extends StatefulWidget {
+class AuthForm extends StatefulWidget {
   final Function onSignUp;
   final Function onLogin;
 
-  const SignUpLoginForm({
+  const AuthForm({
     Key key,
     this.onSignUp,
     this.onLogin,
   }) : super(key: key);
 
   @override
-  _SignUpLoginFormState createState() => _SignUpLoginFormState();
+  _AuthFormState createState() => _AuthFormState();
 }
 
-class _SignUpLoginFormState extends State<SignUpLoginForm>
+class _AuthFormState extends State<AuthForm>
     with TickerProviderStateMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -43,6 +42,8 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
   FocusNode _emailFocus;
   FocusNode _passwordFocus;
   FocusNode _confirmPasswordFocus;
+
+  TextEditingController _passwordController;
 
   Bloc toggleBloc;
 
@@ -69,6 +70,8 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
     _emailFocus = FocusNode();
     _passwordFocus = FocusNode();
     _confirmPasswordFocus = FocusNode();
+
+    _passwordController = TextEditingController();
 
     slideAnimationController =
         AnimationController(duration: Duration(milliseconds: 300), vsync: this)
@@ -131,9 +134,13 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
         onDismissed: _onConfirmPasswordDismissed,
         child: TextInput(
           height: sizeAnimation.value,
+          isPassword: true,
           hintText: 'Confirm Password',
           focusNode: _confirmPasswordFocus,
           textInputAction: TextInputAction.done,
+          validator: (confirmPassword) =>
+              validator.validateConfirmPasswordEquality(
+                  _passwordController.text, confirmPassword),
           onSubmitted: (_) {},
         ),
       );
@@ -172,6 +179,8 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
               return TextInput(
                 height: 50,
                 hintText: 'Password',
+                controller: _passwordController,
+                isPassword: true,
                 focusNode: _passwordFocus,
                 validator: (password) => validator.validatePassword(password),
                 textInputAction:
@@ -224,7 +233,7 @@ class _SignUpLoginFormState extends State<SignUpLoginForm>
       ];
 
   void _onSubmitButtonTapped() {
-    if(formKey.currentState.validate()){
+    if (formKey.currentState.validate()) {
       if (_isLogin)
         widget.onLogin();
       else

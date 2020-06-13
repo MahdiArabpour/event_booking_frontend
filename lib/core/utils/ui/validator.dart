@@ -7,9 +7,15 @@ class Validator{
     return (regex.hasMatch(email)) ? null : "Invalid email address.";
   }
 
-  validatePassword(String password){
+  String validatePassword(String password){
     if(password.isEmpty) return "Password can't be empty.";
-    if(password.length <= 6) return "Password must be at least 6 characters";
+    if(password.length < 6) return "Password must be at least 6 characters";
     return null;
+  }
+  
+  String validateConfirmPasswordEquality(String password, String confirmPassword){
+    if(confirmPassword.isEmpty) return "confirm password can't be empty.";
+    if (password == confirmPassword) return null;
+    return "Confirm password doesn't match password";
   }
 }

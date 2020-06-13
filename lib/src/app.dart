@@ -1,8 +1,10 @@
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import './ui/pages/signup_login_page/signup_login_page.dart';
-import './ui/pages/signup_login_page/bloc/signup_login_toggle_bloc/bloc.dart';
+import './ui/pages/auth_page/auth_page.dart';
+import './ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 
 class App extends StatelessWidget {
   @override
@@ -19,10 +21,12 @@ class App extends StatelessWidget {
           button: TextStyle(fontFamily: 'OpenSans', color: Colors.white),
         ),
       ),
-      home: BlocProvider<ToggleBloc>(
-        create: (_) => ToggleBloc(),
-        child: SignUpLoginPage(),
-      ),
+      routes: {
+        '/': (_) => BlocProvider<ToggleBloc>(
+              create: (_) => ToggleBloc(),
+              child: AuthPage(),
+            ),
+      },
     );
   }
 }

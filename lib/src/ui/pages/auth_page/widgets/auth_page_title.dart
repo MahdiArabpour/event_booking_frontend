@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/ui/page_size.dart';
 
-class SignUpTitle extends StatelessWidget {
+class AuthPageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageSize = PageSize(context);
