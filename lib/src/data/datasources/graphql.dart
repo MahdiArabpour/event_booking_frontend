@@ -15,12 +15,10 @@ abstract class GraphQl {
 
 class GraphQlImpl implements GraphQl {
   final http.Client client;
-  final InternetAddress internetAddress;
   final String url;
 
-  GraphQlImpl( {
+  GraphQlImpl({
     @required this.client,
-    @required this.internetAddress,
     @required this.url,
   });
 

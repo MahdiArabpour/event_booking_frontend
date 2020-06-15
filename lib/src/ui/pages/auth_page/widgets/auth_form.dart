@@ -47,6 +47,7 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
+  TextEditingController _confirmPasswordController;
 
   Bloc toggleBloc;
 
@@ -76,13 +77,15 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
 
     slideAnimationController =
         AnimationController(duration: Duration(milliseconds: 300), vsync: this)
           ..addListener(_slideAnimationListener);
 
     sizeAnimationController =
-        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 300), vsync: this)
+          ..addListener(_sizeAnimationListener);
     sizeAnimation = Tween(begin: 0.0, end: 50.0).animate(CurvedAnimation(
       parent: sizeAnimationController,
       curve: Curves.fastLinearToSlowEaseIn,
@@ -95,9 +98,18 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
   }
 
   void _slideAnimationListener() {
-    if (slideAnimationController.isDismissed) {
-      sizeAnimationController.reverse();
-    } else if (slideAnimationController.isCompleted) {}
+    if (slideAnimationController.isDismissed) sizeAnimationController.reverse();
+  }
+
+  void _sizeAnimationListener() {
+    if (sizeAnimationController.isCompleted)
+      slideAnimationController.forward();
+    else if (sizeAnimationController.isDismissed) {
+      setState(() {
+        _confirmPasswordController.text = "";
+        _formWidgets.remove(animatedConfirmPassword);
+      });
+    }
   }
 
   Widget _buildAnimatedConfirmPassword(deviceWidth) => AnimatedBuilder(
@@ -138,13 +150,17 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
         onDismissed: _onConfirmPasswordDismissed,
         child: TextInput(
           height: sizeAnimation.value,
+          controller: _confirmPasswordController,
           isPassword: true,
           hintText: 'Confirm Password',
           focusNode: _confirmPasswordFocus,
           textInputAction: TextInputAction.done,
-          validator: (confirmPassword) =>
-              validator.validateConfirmPasswordEquality(
-                  _passwordController.text, confirmPassword),
+          validator: (_) {
+            final confirmPasswordText = _confirmPasswordController.text =
+                _confirmPasswordController.text.trim();
+            validator.validateConfirmPasswordEquality(
+                _passwordController.text, confirmPasswordText);
+          },
           onSubmitted: (_) {},
         ),
       );
@@ -155,7 +171,11 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
           hintText: 'Email',
           controller: _emailController,
           autoFocus: true,
-          validator: (email) => validator.validateEmail(email),
+          validator: (_) {
+            final emailText =
+                _emailController.text = _emailController.text.trim();
+            validator.validateEmail(emailText);
+          },
           focusNode: _emailFocus,
           textInputAction: TextInputAction.next,
           onSubmitted: (_) {
@@ -187,7 +207,11 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
                 controller: _passwordController,
                 isPassword: true,
                 focusNode: _passwordFocus,
-                validator: (password) => validator.validatePassword(password),
+                validator: (_) {
+                  final passwordText = _passwordController.text =
+                      _passwordController.text.trim();
+                  validator.validatePassword(passwordText);
+                },
                 textInputAction:
                     _isLogin ? TextInputAction.done : TextInputAction.next,
                 onSubmitted: (_) {
@@ -249,6 +273,12 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
       _removeConfirmPassword();
   }
 
+  void _insertConfirmPassword() {
+    _formWidgets.insert(4, animatedConfirmPassword);
+    toggleBloc.add(ToggleSignUpEvent());
+    sizeAnimationController.forward();
+  }
+
   void _onConfirmPasswordDismissed(direction) {
     if (direction == DismissDirection.startToEnd)
       confirmPasswordAnimationDirection =
@@ -265,17 +295,7 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
       _formWidgets.remove(animatedConfirmPassword);
       slideAnimationController.reverse();
     } else
-      slideAnimationController.reverse().then(
-            (value) => _formWidgets.remove(animatedConfirmPassword),
-          );
-  }
-
-  void _insertConfirmPassword() {
-    _formWidgets.insert(4, animatedConfirmPassword);
-    toggleBloc.add(ToggleSignUpEvent());
-    sizeAnimationController.forward().then(
-          (value) => slideAnimationController.forward(),
-        );
+      slideAnimationController.reverse();
   }
 
   _buildSubmitButton(BuildContext context) =>

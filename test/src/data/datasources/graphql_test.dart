@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:matcher/matcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +17,10 @@ void main() {
 
   setUp(() {
     httpClient = MockHttpClient();
-    graphQl = GraphQlImpl(client: httpClient, url: url);
+    graphQl = GraphQlImpl(
+      client: httpClient,
+      url: url,
+    );
   });
 
   group('GraphQl query', () {
@@ -109,7 +112,8 @@ void main() {
       () async {
         when(httpClient.post(any,
                 headers: anyNamed('headers'), body: anyNamed('body')))
-            .thenAnswer((realInvocation) async => http.Response('{"error":"Some unknown error"}', 200));
+            .thenAnswer((realInvocation) async =>
+                http.Response('{"error":"Some unknown error"}', 200));
 
         expect(() => graphQl.send(requestQuery),
             throwsA(TypeMatcher<UnknownServerException>()));

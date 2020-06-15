@@ -45,7 +45,10 @@ class MySnackBar {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(
         text,
-        style: Theme.of(context).textTheme.caption,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0
+        ),
       ),
       backgroundColor: color,
     ));
