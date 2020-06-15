@@ -75,15 +75,44 @@ void main() {
     );
 
     test(
-      'Throws a ServerException when the status code is not 200',
+      'Throws a ServerException when the response contains error',
       () async {
         when(httpClient.post(any,
                 headers: anyNamed('headers'), body: anyNamed('body')))
-            .thenAnswer((realInvocation) async =>
-                http.Response('Unsupported Media Type', 415));
+            .thenAnswer((realInvocation) async => http.Response("""
+{
+  "errors": [
+    {
+      "message": "User does not exist",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "login"
+      ]
+    }
+  ],
+  "data": null
+}
+                """, 200));
 
         expect(() => graphQl.send(requestQuery),
-            throwsA(const TypeMatcher<ServerException>()));
+            throwsA(TypeMatcher<ServerException>()));
+      },
+    );
+
+    test(
+      'Throws an UnknownServerException when the response contains unknown error',
+      () async {
+        when(httpClient.post(any,
+                headers: anyNamed('headers'), body: anyNamed('body')))
+            .thenAnswer((realInvocation) async => http.Response('{"error":"Some unknown error"}', 200));
+
+        expect(() => graphQl.send(requestQuery),
+            throwsA(TypeMatcher<UnknownServerException>()));
       },
     );
   });

@@ -293,26 +293,29 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
             snackBar.show('User Already Exists, Please login.');
           else if (state is IncorrectPassword)
             snackBar.show('Password is incorrect.');
-          else if (state is SignedUp) toast.show('Signed up, please waite.', length: ToastLength.SHORT);
-          else if (state is LoggedIn){
+          else if (state is SignedUp)
+            toast.show('Signed up, please waite.', length: ToastLength.SHORT);
+          else if (state is LoggedIn) {
             toast.show("Welcome. You're all set.");
             Navigator.of(context).pushReplacementNamed(DashboardPage.routeName);
-          }
-          else if (state is UnknownError) snackBar.show('An unknown error occured');
+          } else if (state is NoInternet)
+            snackBar.show('Please check your internet connection');
+          else if (state is UnknownError)
+            snackBar.show('An unknown error occured');
         },
         builder: (context, state) {
-          bool isLoading = state is Loading;
+          bool isLoading = state is Loading || state is SignedUp;
           return Button(
-            onTap: _onSubmitButtonTapped,
+            onTap: isLoading ? null : _onSubmitButtonTapped,
             child: isLoading
                 ? Center(
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
                     ),
-                  ),
-                )
+                  )
                 : Text(
                     'Submit',
                     style: Theme.of(context).textTheme.button,

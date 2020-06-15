@@ -37,6 +37,11 @@ class IncorrectPassword extends SubmitState{
   List<Object> get props => const [];
 }
 
+class NoInternet extends SubmitState{
+  @override
+  List<Object> get props => const [];
+}
+
 class UnknownError extends SubmitState{
   @override
   List<Object> get props => const [];

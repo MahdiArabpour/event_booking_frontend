@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
 
 class ServerException implements Exception {
-  final String message;
+  final List<String> messages;
 
-  ServerException({@required this.message});
+  ServerException({this.messages});
 }
 
 class SignUpUserException implements Exception {
@@ -33,6 +33,8 @@ class UserDoesNotExistException implements Exception {}
 class IncorrectPasswordException implements Exception {}
 
 class UnknownServerException implements Exception {}
+
+class NoInternetConnectionException implements Exception{}
 
 abstract class ServerErrorMessages {
   static const USER_ALREADY_EXISTS = "User already Exists";

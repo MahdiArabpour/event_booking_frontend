@@ -32,27 +32,35 @@ class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
   }
 
   Stream<SubmitState> _trySignUp(String email, String password) async* {
-    try{
+    try {
       await signUp(email, password);
       yield SignedUp();
       yield* _tryLogin(email, password);
-    }on UserAlreadyExistException{
+    } on UserAlreadyExistException {
       yield UserAlreadyExists();
-    }on UnknownServerException{
+    } on NoInternetConnectionException {
+      yield NoInternet();
+    } on UnknownServerException {
+      yield UnknownError();
+    } on Exception {
       yield UnknownError();
     }
   }
 
   Stream<SubmitState> _tryLogin(String email, String password) async* {
-    try{
+    try {
       final authData = await login(email, password);
       await secureStorage.write(key: "access_token", value: authData.token);
       yield LoggedIn();
-    }on UserDoesNotExistException{
+    } on UserDoesNotExistException {
       yield UserNotExisting();
-    } on IncorrectPasswordException{
+    } on IncorrectPasswordException {
       yield IncorrectPassword();
-    } on UnknownServerException{
+    } on NoInternetConnectionException {
+      yield NoInternet();
+    } on UnknownServerException {
+      yield UnknownError();
+    } on Exception {
       yield UnknownError();
     }
   }

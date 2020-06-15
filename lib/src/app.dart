@@ -9,6 +9,8 @@ import './ui/pages/auth_page/auth_page.dart';
 import './ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 
 class App extends StatelessWidget {
+  final flutterSecureStorage = FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

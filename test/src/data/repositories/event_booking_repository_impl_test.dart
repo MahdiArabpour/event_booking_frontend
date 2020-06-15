@@ -80,7 +80,7 @@ void main() {
       'Throws a LoginUserException when the status code is not 200',
       () async {
         when(graphQl.send(any))
-            .thenThrow(ServerException(message: 'User already exists'));
+            .thenThrow(ServerException(messages: ['User does not exist']));
 
         expect(
           () => repository.login(email, password),
@@ -89,54 +89,6 @@ void main() {
       },
     );
 
-    test(
-      'Throws a LoginUserException when the status code is 200 but body contains some errors',
-      () async {
-        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
-              "errors": [
-                {
-                  "message": "User does not exist",
-                  "locations": [
-                    {"line": 1, "column": 7}
-                  ],
-                  "path": ["login"]
-                }
-              ],
-              "data": null
-            });
-
-        expect(
-          () => repository.login(email, password),
-          throwsA(TypeMatcher<LoginUserException>()),
-        );
-      },
-    );
-
-    test(
-      'Throws a LoginUserException with the currect List of errorMessages',
-      () async {
-        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
-              "errors": [
-                {
-                  "message": "User does not exist",
-                  "locations": [
-                    {"line": 1, "column": 7}
-                  ],
-                  "path": ["login"]
-                }
-              ],
-              "data": null
-            });
-
-        final expectedErrorList = ["User does not exist"];
-
-        try {
-          await repository.login(email, password);
-        } on LoginUserException catch (error) {
-          expect(error.messages, expectedErrorList);
-        }
-      },
-    );
   });
 
   group('SignUp', () {
@@ -191,7 +143,7 @@ void main() {
       'Throws a SignUpUserException when the status code is not 200',
       () async {
         when(graphQl.send(any))
-            .thenThrow(ServerException(message: 'User already exists'));
+            .thenThrow(ServerException(messages: ['User already exists']));
 
         expect(
           () => repository.signup(email, password),
@@ -200,53 +152,5 @@ void main() {
       },
     );
 
-    test(
-      'Throws a SignupException when the status code is 200 but body contains some errors',
-      () async {
-        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
-              "errors": [
-                {
-                  "message": "User already Exists",
-                  "locations": [
-                    {"line": 1, "column": 10}
-                  ],
-                  "path": ["createUser"]
-                }
-              ],
-              "data": {"createUser": null}
-            });
-
-        expect(
-          () => repository.signup(email, password),
-          throwsA(TypeMatcher<SignUpUserException>()),
-        );
-      },
-    );
-
-    test(
-      'Throws a SignupException with the currect List of errorMessages',
-      () async {
-        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
-              "errors": [
-                {
-                  "message": "User already Exists",
-                  "locations": [
-                    {"line": 1, "column": 10}
-                  ],
-                  "path": ["createUser"]
-                }
-              ],
-              "data": {"createUser": null}
-            });
-
-        final expectedErrorList = ["User already Exists"];
-
-        try {
-          await repository.signup(email, password);
-        } on SignUpUserException catch (error) {
-          expect(error.messages, expectedErrorList);
-        }
-      },
-    );
   });
 }

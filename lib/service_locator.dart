@@ -1,18 +1,18 @@
 
 import 'package:event_booking/src/ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
-import './src/data/models/user.dart';
-import './src/data/datasources/graphql.dart';
-import './src/data/models/event.dart';
-import './src/usecases/signup.dart';
 import './src/usecases/login.dart';
+import './src/usecases/signup.dart';
+import './src/data/models/user.dart';
+import './src/data/models/event.dart';
 import './core/utils/ui/validator.dart';
-import 'src/data/repositories/event_booking_repository_impl.dart';
+import './src/data/datasources/graphql.dart';
+import './src/data/repositories/event_booking_repository_impl.dart';
 
 GetIt locator = GetIt.instance;
 
