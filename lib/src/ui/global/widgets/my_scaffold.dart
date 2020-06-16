@@ -47,7 +47,7 @@ class MyScaffold extends StatelessWidget {
             height: pageSize.bodyHeight,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: borderRadius,
             ),
             child: ClipRRect(

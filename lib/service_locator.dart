@@ -1,3 +1,4 @@
+import 'package:event_booking/src/ui/global/theme/bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
 import 'package:event_booking/src/usecases/events.dart';
@@ -32,4 +33,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => Events(repository: locator<EventBookingRepositoryImpl>()));
   locator.registerLazySingleton(() => EventBookingRepositoryImpl(graphQl: locator<GraphQlImpl>()));
   locator.registerLazySingleton(() => SubmitBloc(signUp: locator(), login: locator(), secureStorage: locator()));
+  locator.registerLazySingleton(() => ThemeBloc());
 }
