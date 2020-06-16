@@ -46,4 +46,3 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => ThemeState(theme: defaultTheme));
   locator.registerLazySingleton(() => ThemeBloc(cacheTheme: locator(), initialThemeState: locator<ThemeState>()));
 }
-

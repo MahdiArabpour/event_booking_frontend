@@ -1,117 +1,93 @@
 import 'package:event_booking/src/ui/global/widgets/my_scaffold.dart';
-import 'package:event_booking/src/ui/pages/settings_page/settings_page.dart';
+import 'package:event_booking/src/ui/pages/dashboard_page/widgets/over_flow_menu.dart';
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends StatelessWidget {
   static const routeName = "/dashboard-page";
 
-  @override
-  _DashboardPageState createState() => _DashboardPageState();
-}
-
-class _DashboardPageState extends State<DashboardPage> {
-  void _onOverFlowMenuItemSelected(Choice item) {
-    switch (item.index) {
-      case 0:
-        _onSettingsButtonPressed();
-        break;
-      case 1:
-        _onLogOutButtonPressed();
-        break;
-    }
-  }
-
-  void _onSettingsButtonPressed() =>
-      Navigator.of(context).pushNamed(SettingsPage.routeName);
-
-  void _onLogOutButtonPressed() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Logout"),
-            content: Text(
-              "Are you sure you're going to log out of your account?",
+  void _onAddButtonPressed(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (context) => SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 20.0,
+              top: 25.0,
+              right: 20,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10.0,
             ),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              RaisedButton(
-                onPressed: _onConfirmLogout,
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                child: Text('Ok'),
-              ),
-              SizedBox(width: 0.5),
-            ],
-          ));
-
-  void _onConfirmLogout() {}
-
-  void _onAddButtonPressed() => print('addEvent');
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Add a new event",
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Title",
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Description",
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    labelText: "Price",
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Cancel'),
+                    ),
+                    RaisedButton(
+                      onPressed: () {},
+                      child: Text('Add'),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
       appBarTitle: Text('Event Booking'),
       appBarActions: <Widget>[
-        PopupMenuButton<Choice>(
-          onSelected: _onOverFlowMenuItemSelected,
-          itemBuilder: (BuildContext context) {
-            return choices
-                .map((Choice choice) => PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            choice.title,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                          Icon(
-                            choice.icon,
-                            color: Theme.of(context).textTheme.subtitle1.color,
-                          ),
-                        ],
-                      ),
-                    ))
-                .toList();
-          },
-        ),
+        OverFlowMenu(),
       ],
       body: Center(
         child: Container(child: Text('Hello World')),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _onAddButtonPressed,
+        onPressed: () => _onAddButtonPressed(context),
         child: Icon(Icons.add),
         tooltip: "Add new Event",
       ),
     );
   }
 }
-
-class Choice {
-  final int index;
-  final String title;
-  final IconData icon;
-
-  const Choice({
-    this.index,
-    this.title,
-    this.icon,
-  });
-}
-
-const List<Choice> choices = const <Choice>[
-  const Choice(
-    index: 0,
-    title: "Settings",
-    icon: Icons.settings,
-  ),
-  const Choice(
-    index: 1,
-    title: "Logout",
-    icon: Icons.exit_to_app,
-  ),
-];

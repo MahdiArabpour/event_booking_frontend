@@ -34,6 +34,8 @@ class MyScaffold extends StatelessWidget {
               .unfocus(); // Dismiss keyboard on touch outside of tappable widgets.
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           actions: appBarActions,
           leading: appBarLeading,

@@ -23,7 +23,7 @@ final appThemeData = {
       ),
     ),
     dark: ThemeData(
-      primaryColor: Colors.indigo[900],
+      primaryColor: Colors.indigo[800],
       accentColor: Colors.pink[900],
       cursorColor: Colors.pink,
       brightness: Brightness.dark,
