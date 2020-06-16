@@ -1,13 +1,13 @@
 import 'package:mockito/mockito.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:matcher/matcher.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import 'package:event_booking/core/errors/exceptions.dart';
-import 'package:event_booking/src/data/datasources/graphql.dart';
-import 'package:event_booking/src/data/models/auth_data.dart';
-import 'package:event_booking/src/data/repositories/event_booking_repository_impl.dart';
 import 'package:event_booking/src/data/models/user.dart';
 import 'package:event_booking/src/data/models/event.dart';
+import 'package:event_booking/core/errors/exceptions.dart';
+import 'package:event_booking/src/data/models/auth_data.dart';
+import 'package:event_booking/src/data/datasources/graphql.dart';
+import 'package:event_booking/src/data/repositories/remote_data_source_repository_impl.dart';
 import 'package:event_booking/core/utils/graphql/queries.dart' as graphql_query;
 import 'package:event_booking/core/utils/graphql/mutations.dart'
     as graphql_mutation;
@@ -16,11 +16,11 @@ class MockGraphQl extends Mock implements GraphQl {}
 
 void main() {
   MockGraphQl graphQl;
-  EventBookingRepositoryImpl repository;
+  RemoteDataSourceRepositoryImpl repository;
 
   setUp(() {
     graphQl = MockGraphQl();
-    repository = EventBookingRepositoryImpl(graphQl: graphQl);
+    repository = RemoteDataSourceRepositoryImpl(graphQl: graphQl);
   });
 
   group('Login', () {

@@ -4,15 +4,15 @@ import 'package:meta/meta.dart';
 import '../datasources/graphql.dart';
 import '../models/auth_data.dart';
 import '../models/user.dart';
-import '../../repositories/event_booking_repository.dart';
+import '../../repositories/remote_data_source_repository.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../../core/utils/graphql/queries.dart' as graphql_query;
 import '../../../core/utils/graphql/mutations.dart' as graphql_mutation;
 
-class EventBookingRepositoryImpl implements EventBookingRepository {
+class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
   final GraphQl graphQl;
 
-  EventBookingRepositoryImpl({@required this.graphQl});
+  RemoteDataSourceRepositoryImpl({@required this.graphQl});
 
   @override
   Future<AuthData> login(String email, String password) async {

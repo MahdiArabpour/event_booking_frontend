@@ -1,4 +1,5 @@
 import 'package:event_booking/core/errors/exceptions.dart';
+import 'package:event_booking/src/usecases/cache_token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
@@ -10,12 +11,12 @@ import 'package:event_booking/src/usecases/signup.dart';
 class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
   final SignUp signUp;
   final Login login;
-  final FlutterSecureStorage secureStorage;
+  final CacheToken cacheToken;
 
   SubmitBloc({
     @required this.signUp,
     @required this.login,
-    @required this.secureStorage,
+    @required this.cacheToken,
   });
 
   @override
@@ -50,7 +51,7 @@ class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
   Stream<SubmitState> _tryLogin(String email, String password) async* {
     try {
       final authData = await login(email, password);
-      await secureStorage.write(key: "access_token", value: authData.token);
+      await cacheToken(authData.token);
       yield LoggedIn();
     } on UserDoesNotExistException {
       yield UserNotExisting();

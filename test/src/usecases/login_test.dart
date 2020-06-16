@@ -4,11 +4,11 @@ import 'package:matcher/matcher.dart';
 
 import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/models/auth_data.dart';
-import 'package:event_booking/src/data/repositories/event_booking_repository_impl.dart';
+import 'package:event_booking/src/data/repositories/remote_data_source_repository_impl.dart';
 import 'package:event_booking/src/usecases/login.dart';
 
 class MockEventBookingRepository extends Mock
-    implements EventBookingRepositoryImpl {}
+    implements RemoteDataSourceRepositoryImpl {}
 
 void main() {
   MockEventBookingRepository repository;

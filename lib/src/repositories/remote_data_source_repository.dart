@@ -2,7 +2,7 @@ import '../data/models/auth_data.dart';
 import '../data/models/user.dart';
 import '../data/models/event.dart';
 
-abstract class EventBookingRepository {
+abstract class RemoteDataSourceRepository {
   /// Sends user information to the graphql server to create new user account
   /// and if signup was successful returns created [User] Object!
   Future<User> signup(String email, String password);

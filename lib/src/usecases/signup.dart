@@ -1,11 +1,11 @@
 import 'package:meta/meta.dart';
 
 import '../data/models/user.dart';
-import '../repositories/event_booking_repository.dart';
+import '../repositories/remote_data_source_repository.dart';
 import '../../core/errors/exceptions.dart';
 
 class SignUp {
-  final EventBookingRepository repository;
+  final RemoteDataSourceRepository repository;
 
   SignUp({@required this.repository});
 

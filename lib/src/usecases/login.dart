@@ -2,10 +2,10 @@ import 'package:meta/meta.dart';
 
 import 'package:event_booking/core/errors/exceptions.dart';
 import 'package:event_booking/src/data/models/auth_data.dart';
-import 'package:event_booking/src/repositories/event_booking_repository.dart';
+import 'package:event_booking/src/repositories/remote_data_source_repository.dart';
 
 class Login {
-  final EventBookingRepository repository;
+  final RemoteDataSourceRepository repository;
 
   Login({@required this.repository});
 

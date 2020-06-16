@@ -158,7 +158,7 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
           validator: (_) {
             final confirmPasswordText = _confirmPasswordController.text =
                 _confirmPasswordController.text.trim();
-            validator.validateConfirmPasswordEquality(
+            return validator.validateConfirmPasswordEquality(
                 _passwordController.text, confirmPasswordText);
           },
           onSubmitted: (_) {},
@@ -174,7 +174,7 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
           validator: (_) {
             final emailText =
                 _emailController.text = _emailController.text.trim();
-            validator.validateEmail(emailText);
+            return validator.validateEmail(emailText);
           },
           focusNode: _emailFocus,
           textInputAction: TextInputAction.next,
@@ -210,7 +210,7 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
                 validator: (_) {
                   final passwordText = _passwordController.text =
                       _passwordController.text.trim();
-                  validator.validatePassword(passwordText);
+                  return validator.validatePassword(passwordText);
                 },
                 textInputAction:
                     _isLogin ? TextInputAction.done : TextInputAction.next,

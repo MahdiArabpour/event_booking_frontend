@@ -1,36 +1,32 @@
 import 'package:event_booking/src/ui/global/theme/bloc/bloc.dart';
+import 'package:event_booking/src/ui/global/theme/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../global/theme/app_themes.dart';
 
-class ChangeThemeItem extends StatefulWidget {
+class ChangeThemeItem extends StatefulWidget{
   @override
   _ChangeThemeItemState createState() => _ChangeThemeItemState();
 }
 
 class _ChangeThemeItemState extends State<ChangeThemeItem> {
-  ThemeChoice choice;
   ThemeBloc bloc;
+  ThemeProvider provider;
 
-  @override
-  void initState() {
-    super.initState();
-    choice = themes[0];
-  }
-
-  _onThemeDropDownMenuItemSelected(ThemeChoice theme) {
-    switch (theme.appTheme) {
-      case AppTheme.indigo:
-        setState(() => choice = themes[0]);
+  _onThemeDropDownMenuItemSelected(String theme) {
+    switch (theme) {
+      case ThemeNames.INDIGO:
+        provider.changeThemeName(ThemeNames.INDIGO);
         bloc.add(ChangeTheme(theme: AppTheme.indigo));
         break;
-      case AppTheme.purple:
-        setState(() => choice = themes[1]);
+      case ThemeNames.PURPLE:
+        provider.changeThemeName(ThemeNames.PURPLE);
         bloc.add(ChangeTheme(theme: AppTheme.purple));
         break;
-      case AppTheme.red:
-        setState(() => choice = themes[2]);
+      case ThemeNames.RED:
+        provider.changeThemeName(ThemeNames.RED);
         bloc.add(ChangeTheme(theme: AppTheme.red));
         break;
     }
@@ -39,17 +35,27 @@ class _ChangeThemeItemState extends State<ChangeThemeItem> {
   @override
   Widget build(BuildContext context) {
     bloc = context.bloc<ThemeBloc>();
+    provider = Provider.of<ThemeProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text('Theme'),
-        DropdownButton<ThemeChoice>(
-          value: choice,
+        Text(
+          'Theme',
+          style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).textTheme.subtitle1.color,
+          ),
+        ),
+        DropdownButton<String>(
+          value: provider.themeName,
           onChanged: _onThemeDropDownMenuItemSelected,
+          underline: null,
           items: themes
-              .map((theme) => DropdownMenuItem<ThemeChoice>(
+              .map((theme) => DropdownMenuItem<String>(
                     value: theme,
-                    child: Text(theme.text),
+                    child: Text(theme),
                   ))
               .toList(),
         ),
@@ -58,18 +64,8 @@ class _ChangeThemeItemState extends State<ChangeThemeItem> {
   }
 }
 
-const themes = const <ThemeChoice>[
-  const ThemeChoice(text: "Indigo", appTheme: AppTheme.indigo),
-  const ThemeChoice(text: "purple", appTheme: AppTheme.purple),
-  const ThemeChoice(text: "red", appTheme: AppTheme.red),
+const themes = const <String>[
+  ThemeNames.INDIGO,
+  ThemeNames.PURPLE,
+  ThemeNames.RED,
 ];
-
-class ThemeChoice {
-  final AppTheme appTheme;
-  final String text;
-
-  const ThemeChoice({
-    @required this.appTheme,
-    @required this.text,
-  });
-}

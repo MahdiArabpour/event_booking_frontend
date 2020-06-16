@@ -1,4 +1,4 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:event_booking/src/usecases/cache_token.dart';
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';
@@ -8,13 +8,21 @@ import 'src/ui/pages/auth_page/auth_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocator();
-  final flutterSecureStorage = locator<FlutterSecureStorage>();
+  await setupLocator(); // register all of required instances to service locator
+  final launcherPage = await _getLauncherPage();
+  runApp(App(launcherPage));
+}
+
+Future<Widget> _getLauncherPage() async {
+  final cacheToken = locator<CacheToken>();
+
   Widget launcherPage;
-  final token = await flutterSecureStorage.read(key: "access_token");
+  final token = await cacheToken.get();
+
   if (token == null)
     launcherPage = AuthPage();
   else
     launcherPage = DashboardPage();
-  runApp(App(launcherPage));
+
+  return launcherPage;
 }
