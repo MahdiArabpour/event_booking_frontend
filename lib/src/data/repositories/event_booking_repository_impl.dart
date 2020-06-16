@@ -1,4 +1,4 @@
-
+import 'package:event_booking/src/data/models/event.dart';
 import 'package:meta/meta.dart';
 
 import '../datasources/graphql.dart';
@@ -42,5 +42,53 @@ class EventBookingRepositoryImpl implements EventBookingRepository {
     } on ServerException catch (error) {
       throw SignUpUserException(error.messages);
     }
+  }
+
+  @override
+  Future<List<Event>> getEvents() async {
+    final eventsQuery = graphql_query.getEvents(
+      title: true,
+      description: true,
+      date: true,
+      price: true,
+      creator: true,
+    );
+
+    final resultJson = await graphQl.send(eventsQuery);
+
+    final eventsJson = resultJson['data']['events'];
+
+    final listOfEvents = eventsJson
+        .map((eventJson) => Event.fromJson(eventJson))
+        .cast<Event>()
+        .toList();
+
+    return listOfEvents;
+  }
+
+  @override
+  Future<Event> postEvent(Event event) async {
+    final createEventQuery = graphql_mutation.createEvent(
+      title: event.title,
+      description: event.description,
+      price: event.price,
+      dateISOString: event.date.toIso8601String(),
+    );
+
+    final resultJson = await graphQl.send(createEventQuery);
+
+    final eventJson = resultJson['data']['createEvent'];
+
+    final createdEvent = Event(
+      (b) => b
+        ..id = eventJson['_id']
+        ..title = event.title
+        ..description = event.description
+        ..date = event.date
+        ..price = event.price
+        ..creator = event.creator.toBuilder(),
+    );
+
+    return createdEvent;
   }
 }

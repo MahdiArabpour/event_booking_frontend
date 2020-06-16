@@ -18,12 +18,16 @@ class _$UserSerializer implements StructuredSerializer<User> {
   Iterable<Object> serialize(Serializers serializers, User object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      '_id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
       'email',
       serializers.serialize(object.email,
           specifiedType: const FullType(String)),
     ];
+    if (object.id != null) {
+      result
+        ..add('_id')
+        ..add(serializers.serialize(object.id,
+            specifiedType: const FullType(String)));
+    }
     if (object.password != null) {
       result
         ..add('password')
@@ -91,9 +95,6 @@ class _$User extends User {
 
   _$User._({this.id, this.email, this.password, this.createdEvents})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('User', 'id');
-    }
     if (email == null) {
       throw new BuiltValueNullFieldError('User', 'email');
     }

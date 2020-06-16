@@ -1,6 +1,6 @@
 import 'package:event_booking/service_locator.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
-import 'package:event_booking/src/ui/pages/dashboard-page.dart';
+import 'file:///D:/Programing%20Projects/flutter_projects/event_booking/lib/src/ui/pages/dashboard_page/dashboard-page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +16,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         accentColor: Colors.pink,

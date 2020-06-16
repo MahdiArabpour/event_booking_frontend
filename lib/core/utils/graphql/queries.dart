@@ -17,7 +17,7 @@ String getEvents({
     if (description) "description",
     if (price) "price",
     if (date) "date",
-    if (creator) "creator{_id}",
+    if (creator) "creator{email}",
   ];
 
   if (fields.isEmpty)

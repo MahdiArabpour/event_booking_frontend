@@ -7,6 +7,7 @@ import './user.dart';
 part 'event.g.dart';
 
 abstract class Event implements Built<Event, EventBuilder> {
+  @nullable
   @BuiltValueField(wireName: '_id')
   String get id;
 
@@ -27,8 +28,9 @@ abstract class Event implements Built<Event, EventBuilder> {
 
   factory Event([updates(EventBuilder b)]) = _$Event;
 
-  factory Event.fromJson(Map<String, dynamic> map) =>
-      serializers.deserializeWith(Event.serializer, map);
+  factory Event.fromJson(Map<String, dynamic> map) {
+    return serializers.deserializeWith(Event.serializer, map);
+  }
 
   Map<String, dynamic> toJson() =>
       serializers.serializeWith(Event.serializer, this);

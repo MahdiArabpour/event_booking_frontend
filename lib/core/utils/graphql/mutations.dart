@@ -1,12 +1,14 @@
+import 'package:meta/meta.dart';
+
 String signUp(String email, String password) =>
     'mutation{createUser(userInput:{email:"$email",password:"$password"}){_id,email}}';
 
-String createEvent(
-  String title,
-  String description,
-  double price,
-  String dateISOString,
-) =>
+String createEvent({
+  @required String title,
+  @required String description,
+  @required double price,
+  @required String dateISOString,
+}) =>
     'mutation{createEvent(eventInput:{title:"$title",description:"$description",price:$price,date:"$dateISOString"}){_id}}';
 
 String bookEvent(String eventId) =>

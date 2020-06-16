@@ -18,8 +18,6 @@ class _$EventSerializer implements StructuredSerializer<Event> {
   Iterable<Object> serialize(Serializers serializers, Event object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
@@ -32,11 +30,19 @@ class _$EventSerializer implements StructuredSerializer<Event> {
       'date',
       serializers.serialize(object.date,
           specifiedType: const FullType(DateTime)),
-      'creator',
-      serializers.serialize(object.creator,
-          specifiedType: const FullType(User)),
     ];
-
+    if (object.id != null) {
+      result
+        ..add('_id')
+        ..add(serializers.serialize(object.id,
+            specifiedType: const FullType(String)));
+    }
+    if (object.creator != null) {
+      result
+        ..add('creator')
+        ..add(serializers.serialize(object.creator,
+            specifiedType: const FullType(User)));
+    }
     return result;
   }
 
@@ -51,7 +57,7 @@ class _$EventSerializer implements StructuredSerializer<Event> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
+        case '_id':
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
@@ -107,9 +113,6 @@ class _$Event extends Event {
       this.date,
       this.creator})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Event', 'id');
-    }
     if (title == null) {
       throw new BuiltValueNullFieldError('Event', 'title');
     }
@@ -121,9 +124,6 @@ class _$Event extends Event {
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('Event', 'date');
-    }
-    if (creator == null) {
-      throw new BuiltValueNullFieldError('Event', 'creator');
     }
   }
 
@@ -237,12 +237,12 @@ class EventBuilder implements Builder<Event, EventBuilder> {
               description: description,
               price: price,
               date: date,
-              creator: creator.build());
+              creator: _creator?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'creator';
-        creator.build();
+        _creator?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Event', _$failedField, e.toString());

@@ -8,6 +8,7 @@ import './event.dart';
 part 'user.g.dart';
 
 abstract class User implements Built<User, UserBuilder> {
+  @nullable
   @BuiltValueField(wireName: '_id')
   String get id;
 

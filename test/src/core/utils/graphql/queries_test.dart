@@ -17,7 +17,7 @@ void main() {
         );
 
         final expectedQuery =
-            'query{events{_id,title,description,price,date,creator{_id}}}';
+            'query{events{_id,title,description,price,date,creator{email}}}';
 
         expect(query, expectedQuery);
       });
@@ -54,7 +54,7 @@ void main() {
           creator: true,
         );
 
-        final expectedQuery4 = 'query{events{creator{_id}}}';
+        final expectedQuery4 = 'query{events{creator{email}}}';
 
         expect(query4, expectedQuery4);
       });

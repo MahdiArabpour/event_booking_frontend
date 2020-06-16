@@ -1,5 +1,6 @@
 import '../data/models/auth_data.dart';
 import '../data/models/user.dart';
+import '../data/models/event.dart';
 
 abstract class EventBookingRepository {
   /// Sends user information to the graphql server to create new user account
@@ -9,4 +10,10 @@ abstract class EventBookingRepository {
   /// Sends user information to the graphql server to check if user is
   /// signed up previously
   Future<AuthData> login(String email, String password);
+
+
+  /// gets all events and returns a list of event objects.
+  Future<List<Event>> getEvents();
+
+  Future<Event> postEvent(Event event);
 }

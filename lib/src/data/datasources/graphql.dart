@@ -25,50 +25,43 @@ class GraphQlImpl implements GraphQl {
   @override
   send(String body, {String token = ''}) async {
     try {
-      final result = await InternetAddress.lookup('google.com');
-      final thereIsInternetConnection =
-          result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-      if (thereIsInternetConnection) {
-        Map<String, String> headers = {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        };
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 
-        final postBody = {
-          'query': body,
-        };
+      final postBody = {
+        'query': body,
+      };
 
-        final response = await client.post(
-          url,
-          headers: headers,
-          body: json.encode(postBody),
-        );
+      final response = await client.post(
+        url,
+        headers: headers,
+        body: json.encode(postBody),
+      );
 
-        final jsonResult = json.decode(response.body);
+      final jsonResult = json.decode(response.body);
 
-        final errors = jsonResult['errors'];
-        final thereAreErrors = errors != null;
-        final isSuccessful = jsonResult['data'] != null && !thereAreErrors;
+      final errors = jsonResult['errors'];
+      final thereAreErrors = errors != null;
+      final isSuccessful = jsonResult['data'] != null && !thereAreErrors;
 
-        if (isSuccessful) {
-          return jsonResult;
-        }
-
-        if (thereAreErrors) {
-          List<String> messages = errors
-              .map((error) {
-                return error['message'];
-              })
-              .cast<String>()
-              .toList();
-          throw ServerException(messages: messages);
-        }
-
-        throw UnknownServerException();
+      if (isSuccessful) {
+        return jsonResult;
       }
 
-      throw SocketException('There is no internet connection');
-    } on SocketException catch (_) {
+      if (thereAreErrors) {
+        List<String> messages = errors
+            .map((error) {
+              return error['message'];
+            })
+            .cast<String>()
+            .toList();
+        throw ServerException(messages: messages);
+      }
+
+      throw UnknownServerException();
+    } on SocketException {
       throw NoInternetConnectionException();
     }
   }

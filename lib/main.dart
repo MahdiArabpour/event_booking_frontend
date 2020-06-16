@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'src/app.dart';
 import 'service_locator.dart';
-import 'src/ui/pages/dashboard-page.dart';
+import 'src/ui/pages/dashboard_page/dashboard-page.dart';
 import 'src/ui/pages/auth_page/auth_page.dart';
 
 void main() async {

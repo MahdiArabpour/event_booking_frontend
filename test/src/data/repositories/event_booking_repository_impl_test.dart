@@ -7,6 +7,7 @@ import 'package:event_booking/src/data/datasources/graphql.dart';
 import 'package:event_booking/src/data/models/auth_data.dart';
 import 'package:event_booking/src/data/repositories/event_booking_repository_impl.dart';
 import 'package:event_booking/src/data/models/user.dart';
+import 'package:event_booking/src/data/models/event.dart';
 import 'package:event_booking/core/utils/graphql/queries.dart' as graphql_query;
 import 'package:event_booking/core/utils/graphql/mutations.dart'
     as graphql_mutation;
@@ -88,7 +89,6 @@ void main() {
         );
       },
     );
-
   });
 
   group('SignUp', () {
@@ -151,6 +151,172 @@ void main() {
         );
       },
     );
+  });
 
+  group('getEvents', () {
+    final eventsQuery = graphql_query.getEvents(
+      title: true,
+      description: true,
+      date: true,
+      price: true,
+      creator: true,
+    );
+
+    test(
+      'sends event query to graphql',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "data": {
+                "events": [
+                  {
+                    "title": "test1",
+                    "description": "test1 description",
+                    "price": 9.99,
+                    "date": "2020-06-05T11:42:38.585Z",
+                    "creator": {"email": "test@test.com"}
+                  },
+                  {
+                    "title": "test2",
+                    "description": "test2 description",
+                    "price": 9.99,
+                    "date": "2020-06-05T11:42:38.585Z",
+                    "creator": {"email": "test@test.com"}
+                  }
+                ]
+              }
+            });
+
+        await repository.getEvents();
+
+        verify(graphQl.send(eventsQuery));
+      },
+    );
+
+    test(
+      'Returns the right List of Event objects when there was some data returned by graphql',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "data": {
+                "events": [
+                  {
+                    "title": "test1",
+                    "description": "test1 description",
+                    "price": 9.99,
+                    "date": "2020-06-05T11:42:38.585Z",
+                    "creator": {"email": "test@test.com"}
+                  },
+                  {
+                    "title": "test2",
+                    "description": "test2 description",
+                    "price": 9.99,
+                    "date": "2020-06-05T11:42:38.585Z",
+                    "creator": {"email": "test@test.com"}
+                  }
+                ]
+              }
+            });
+
+        final events = await repository.getEvents();
+
+        final expectedEvents = [
+          Event.fromJson({
+            "title": "test1",
+            "description": "test1 description",
+            "price": 9.99,
+            "date": "2020-06-05T11:42:38.585Z",
+            "creator": {"email": "test@test.com"}
+          }),
+          Event.fromJson({
+            "title": "test2",
+            "description": "test2 description",
+            "price": 9.99,
+            "date": "2020-06-05T11:42:38.585Z",
+            "creator": {"email": "test@test.com"}
+          }),
+        ];
+
+        expect(
+          events,
+          expectedEvents,
+        );
+      },
+    );
+  });
+
+  group('postEvents', () {
+    final id = "AnId";
+    final title = "test";
+    final description = "test description";
+    final price = 9.99;
+    final date = DateTime.now().toIso8601String();
+    final creator = User(
+      (b) => b..email = "me@me.com",
+    ).toBuilder();
+
+    final eventsMutation = graphql_mutation.createEvent(
+      title: title,
+      description: description,
+      price: price,
+      dateISOString: date,
+    );
+
+    test(
+      'sends event mutation to graphql',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "data": {
+                "createEvent": {"_id": id}
+              }
+            });
+
+        await repository.postEvent(Event(
+          (b) => b
+            ..title = title
+            ..description = description
+            ..price = price
+            ..date = DateTime.parse(date)
+            ..creator = creator,
+        ));
+
+        verify(graphQl.send(eventsMutation));
+      },
+    );
+
+    test(
+      'Returns the right List of Event objects when there was some data returned by graphql',
+      () async {
+        when(graphQl.send(any)).thenAnswer((realInvocation) async => {
+              "data": {
+                "createEvent": {
+                  "_id": id,
+                }
+              }
+            });
+
+        final createdEvent = await repository.postEvent(Event(
+          (b) => b
+            ..title = title
+            ..description = description
+            ..price = price
+            ..date = DateTime.parse(date)
+            ..creator = creator,
+        ));
+
+        final expectedEvent = Event(
+          (b) => b
+            ..id = id
+            ..title = title
+            ..description = description
+            ..price = price
+            ..date = DateTime.parse(date)
+            ..creator = creator,
+        );
+
+        expect(
+          createdEvent,
+          expectedEvent,
+        );
+      },
+    );
   });
 }

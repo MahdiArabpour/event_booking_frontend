@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/utils/ui/page_size.dart';
 
-
 class MyScaffold extends StatelessWidget {
   final Widget body;
   final Widget appBarTitle;
   final List<Widget> appBarActions;
   final Widget appBarLeading;
+  final Widget floatingActionButton;
 
   MyScaffold({
     Key key,
@@ -15,6 +15,7 @@ class MyScaffold extends StatelessWidget {
     this.appBarTitle,
     this.appBarActions,
     this.appBarLeading,
+    this.floatingActionButton,
   }) : super(key: key);
 
   final borderRadius = const BorderRadius.only(
@@ -28,7 +29,9 @@ class MyScaffold extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus(); // Dismiss keyboard on touch outside of tappable widgets.
+        if (!currentFocus.hasPrimaryFocus)
+          currentFocus
+              .unfocus(); // Dismiss keyboard on touch outside of tappable widgets.
       },
       child: Scaffold(
         appBar: AppBar(
@@ -53,6 +56,7 @@ class MyScaffold extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButton: floatingActionButton,
       ),
     );
   }
