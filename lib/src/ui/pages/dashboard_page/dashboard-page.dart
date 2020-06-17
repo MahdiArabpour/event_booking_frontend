@@ -27,7 +27,7 @@ class DashboardPage extends StatelessWidget {
         ],
         appBarBottom: TabBar(
           unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
-          indicator: CircleTabIndicator(radius: 3.0),
+          indicator: CircleTabIndicator(strokeWidth: 4.0, lineWidth: MediaQuery.of(context).size.width / 3),
           tabs: <Widget>[
             Tab(
               icon: Icon(Icons.event),

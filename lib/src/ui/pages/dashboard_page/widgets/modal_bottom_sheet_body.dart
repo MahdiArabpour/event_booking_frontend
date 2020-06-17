@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class ModalBottomSheetBody extends StatelessWidget {
+class ModalBottomSheetBody extends StatefulWidget {
+  @override
+  _ModalBottomSheetBodyState createState() => _ModalBottomSheetBodyState();
+}
+
+class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
+  DateTime _selectedDate;
+
+  _onChooseDateButtonPressed(BuildContext context) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate == null) return;
+    setState(() => _selectedDate = pickedDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -14,51 +33,76 @@ class ModalBottomSheetBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            const Text(
               "Add a new event",
               style: TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Title",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5.0,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Description",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5.0,
             ),
-            TextField(
+            const TextField(
               keyboardType: TextInputType.numberWithOptions(),
               decoration: InputDecoration(
                 labelText: "Price",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
+            ),
+            Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    _selectedDate == null
+                        ? 'No date chosen'
+                        : 'Date: ${DateFormat.yMMMd().format(_selectedDate)}',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () => _onChooseDateButtonPressed(context),
+                    child: const Text(
+                      'Choose date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 FlatButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
                 RaisedButton(
                   onPressed: () {},
-                  child: Text('Add'),
+                  child: const Text('Add'),
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                 ),

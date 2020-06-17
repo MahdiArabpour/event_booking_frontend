@@ -1,4 +1,3 @@
-import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 
 import './logout_alert.dart';

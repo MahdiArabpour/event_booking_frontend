@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import '../../../../../../service_locator.dart';
 import 'bloc.dart';
 
 import '../../../../../usecases/login.dart';
