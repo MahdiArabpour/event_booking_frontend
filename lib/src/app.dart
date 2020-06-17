@@ -1,6 +1,7 @@
 import 'package:event_booking/service_locator.dart';
 import 'package:event_booking/src/ui/global/theme/bloc/bloc.dart';
 import 'package:event_booking/src/ui/global/theme/provider/theme_provider.dart';
+import 'package:event_booking/src/ui/pages/auth_page/auth_page.dart';
 import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/settings_page/settings_page.dart';
 import 'file:///D:/Programing%20Projects/flutter_projects/event_booking/lib/src/ui/pages/dashboard_page/dashboard-page.dart';

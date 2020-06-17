@@ -1,12 +1,12 @@
-import 'package:event_booking/core/errors/exceptions.dart';
-import 'package:event_booking/src/usecases/cache_token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
-
+import '../../../../../../service_locator.dart';
 import 'bloc.dart';
-import 'package:event_booking/src/usecases/login.dart';
-import 'package:event_booking/src/usecases/signup.dart';
+
+import '../../../../../usecases/login.dart';
+import '../../../../../usecases/signup.dart';
+import '../../../../../usecases/cache_token.dart';
+import '../../../../../../core/errors/exceptions.dart';
 
 class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
   final SignUp signUp;

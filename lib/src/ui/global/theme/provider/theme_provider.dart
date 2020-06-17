@@ -1,7 +1,8 @@
-import 'package:event_booking/service_locator.dart';
-import 'package:event_booking/src/ui/global/theme/app_themes.dart';
-import 'package:event_booking/src/usecases/cache_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:event_booking/service_locator.dart';
+
+import '../app_themes.dart';
+import '../../../../usecases/cache_theme.dart';
 
 class ThemeProvider with ChangeNotifier{
   String _themeName;

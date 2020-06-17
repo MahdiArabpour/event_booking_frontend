@@ -1,5 +1,8 @@
-import 'package:event_booking/src/ui/pages/settings_page/settings_page.dart';
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
+
+import './logout_alert.dart';
+import '../../settings_page/settings_page.dart';
 
 class OverFlowMenu extends StatelessWidget {
   void _onOverFlowMenuItemSelected(Choice item, BuildContext context) {
@@ -16,34 +19,13 @@ class OverFlowMenu extends StatelessWidget {
   void _onSettingsButtonPressed(BuildContext context) =>
       Navigator.of(context).pushNamed(SettingsPage.routeName);
 
-  void _onLogOutButtonPressed(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Logout"),
-            content: Text(
-              "Are you sure you're going to log out of your account?",
-            ),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              RaisedButton(
-                onPressed: _onConfirmLogout,
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                child: Text('Ok'),
-              ),
-              SizedBox(width: 0.5),
-            ],
-          ));
-
-  void _onConfirmLogout() {}
+  void _onLogOutButtonPressed(BuildContext context) =>
+      showDialog(context: context, builder: (context) => LogoutAlert());
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Choice>(
-      onSelected: (item) => _onOverFlowMenuItemSelected(item,context),
+      onSelected: (item) => _onOverFlowMenuItemSelected(item, context),
       itemBuilder: (BuildContext context) {
         return choices
             .map((Choice choice) => PopupMenuItem<Choice>(

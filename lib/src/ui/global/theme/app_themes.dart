@@ -1,6 +1,7 @@
 import 'package:event_booking/service_locator.dart';
-import 'package:event_booking/src/usecases/cache_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../../usecases/cache_theme.dart';
 
 enum AppTheme {
   indigo,
@@ -16,6 +17,7 @@ final appThemeData = {
       accentColor: Colors.pink,
       cursorColor: Colors.pink,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[200]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.blueGrey),
@@ -28,6 +30,7 @@ final appThemeData = {
       cursorColor: Colors.pink,
       brightness: Brightness.dark,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.white),
@@ -42,6 +45,7 @@ final appThemeData = {
       accentColor: Colors.deepOrange,
       cursorColor: Colors.deepOrange,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[200]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.blueGrey),
@@ -54,6 +58,7 @@ final appThemeData = {
       cursorColor: Colors.deepOrange,
       brightness: Brightness.dark,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.white),
@@ -68,6 +73,7 @@ final appThemeData = {
       accentColor: Colors.green,
       cursorColor: Colors.green,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey[400],
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[200]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.blueGrey),
@@ -80,6 +86,7 @@ final appThemeData = {
       cursorColor: Colors.green,
       brightness: Brightness.dark,
       backgroundColor: Colors.white,
+      unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(
         subtitle1: TextStyle(color: Colors.white),

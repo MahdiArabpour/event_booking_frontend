@@ -10,4 +10,6 @@ class CacheToken{
   Future<void> call(String token) => repository.saveToken(token);
 
   Future<String> get() => repository.loadToken();
+
+  Future<void> delete() => repository.deleteToken();
 }

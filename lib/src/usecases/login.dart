@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
 
-import 'package:event_booking/core/errors/exceptions.dart';
-import 'package:event_booking/src/data/models/auth_data.dart';
-import 'package:event_booking/src/repositories/remote_data_source_repository.dart';
+import '../data/models/auth_data.dart';
+import '../../core/errors/exceptions.dart';
+import '../repositories/remote_data_source_repository.dart';
 
 class Login {
   final RemoteDataSourceRepository repository;

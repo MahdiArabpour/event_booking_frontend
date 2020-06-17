@@ -1,6 +1,7 @@
-import 'package:event_booking/src/data/models/event.dart';
-import 'package:event_booking/src/repositories/remote_data_source_repository.dart';
 import 'package:meta/meta.dart';
+
+import '../data/models/event.dart';
+import '../repositories/remote_data_source_repository.dart';
 
 class Events {
   final RemoteDataSourceRepository repository;

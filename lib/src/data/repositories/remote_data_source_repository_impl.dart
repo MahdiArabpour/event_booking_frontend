@@ -1,11 +1,11 @@
-import 'package:event_booking/src/data/models/event.dart';
 import 'package:meta/meta.dart';
 
-import '../datasources/graphql.dart';
-import '../models/auth_data.dart';
 import '../models/user.dart';
-import '../../repositories/remote_data_source_repository.dart';
+import '../models/event.dart';
+import '../models/auth_data.dart';
+import '../datasources/graphql.dart';
 import '../../../core/errors/exceptions.dart';
+import '../../repositories/remote_data_source_repository.dart';
 import '../../../core/utils/graphql/queries.dart' as graphql_query;
 import '../../../core/utils/graphql/mutations.dart' as graphql_mutation;
 

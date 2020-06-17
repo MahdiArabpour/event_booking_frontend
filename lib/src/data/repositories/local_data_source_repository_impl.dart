@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import 'package:event_booking/src/data/datasources/local_storage.dart';
+import '../datasources/local_storage.dart';
 import '../../repositories/local_data_source_repository.dart';
 
 class LocalDataSourceRepositoryImpl implements LocalDataSourceRepository {
@@ -22,10 +22,15 @@ class LocalDataSourceRepositoryImpl implements LocalDataSourceRepository {
   @override
   Future<String> loadToken() async => await secureStorage.load(ACCESS_TOKEN);
 
+
+  @override
+  Future<void> deleteToken() async => await secureStorage.delete(ACCESS_TOKEN);
+
   @override
   Future<void> setDefaultTheme(String themeName) async =>
       await storage.save(THEME_NAME, themeName);
 
   @override
   Future<String> loadDefaultTheme() async => await storage.load(THEME_NAME);
+
 }

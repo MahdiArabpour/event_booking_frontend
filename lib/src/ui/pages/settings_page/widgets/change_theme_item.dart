@@ -1,10 +1,10 @@
-import 'package:event_booking/src/ui/global/theme/bloc/bloc.dart';
-import 'package:event_booking/src/ui/global/theme/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../global/theme/app_themes.dart';
+import '../../../global/theme/bloc/bloc.dart';
+import '../../../global/theme/provider/theme_provider.dart';
 
 class ChangeThemeItem extends StatefulWidget{
   @override

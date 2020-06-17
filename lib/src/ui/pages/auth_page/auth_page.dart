@@ -1,13 +1,13 @@
 import 'package:event_booking/service_locator.dart';
-import 'package:event_booking/src/ui/pages/settings_page/settings_page.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
-import '../../global/widgets/my_scaffold.dart';
-import './bloc/auth_toggle_bloc/bloc.dart';
 import './widgets/auth_form.dart';
-import './widgets/auth_page_title.dart';
 import './bloc/submit_bloc/bloc.dart';
+import './widgets/auth_page_title.dart';
+import './bloc/auth_toggle_bloc/bloc.dart';
+import '../settings_page/settings_page.dart';
+import '../../global/widgets/my_scaffold.dart';
 
 class AuthPage extends StatelessWidget {
   final submitBloc = locator<SubmitBloc>();

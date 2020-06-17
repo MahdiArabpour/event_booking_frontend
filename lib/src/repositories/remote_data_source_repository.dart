@@ -1,6 +1,6 @@
-import '../data/models/auth_data.dart';
 import '../data/models/user.dart';
 import '../data/models/event.dart';
+import '../data/models/auth_data.dart';
 
 abstract class RemoteDataSourceRepository {
   /// Sends user information to the graphql server to create new user account

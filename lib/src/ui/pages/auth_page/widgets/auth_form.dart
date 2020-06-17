@@ -1,16 +1,16 @@
-import 'package:event_booking/core/utils/ui/ui_messages.dart';
 import 'package:event_booking/service_locator.dart';
-import 'package:event_booking/src/ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
-import 'file:///D:/Programing%20Projects/flutter_projects/event_booking/lib/src/ui/pages/dashboard_page/dashboard-page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/utils/ui/page_size.dart';
-import '../../../../../core/utils/ui/validator.dart';
+import '../bloc/submit_bloc/bloc.dart';
+import '../bloc/auth_toggle_bloc/bloc.dart';
 import '../../../global/widgets/button.dart';
 import '../../../global/widgets/text_input.dart';
-import '../bloc/auth_toggle_bloc/bloc.dart';
+import '../../dashboard_page/dashboard-page.dart';
+import '../../../../../core/utils/ui/page_size.dart';
+import '../../../../../core/utils/ui/validator.dart';
+import '../../../../../core/utils/ui/ui_messages.dart';
 
 class AuthForm extends StatefulWidget {
   final Function(String email, String password) onSignUp;
@@ -382,6 +382,6 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
 }
 
 abstract class ConfirmPasswordAnimationDirection {
-  static const double startToEnd = 2.0;
-  static const double endToStart = -2.0;
+  static const double startToEnd = 2.05;
+  static const double endToStart = -2.05;
 }

@@ -36,4 +36,6 @@ class SecureStorage implements LocalStorage {
 
   @override
   Future<void> save(String name, String value) async => await secureStorage.write(key: name, value: value);
+
+  Future<void> delete(String name) async => await secureStorage.delete(key: name);
 }
