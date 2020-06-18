@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:event_booking/src/data/models/auth_data.dart';
 
 abstract class SubmitState extends Equatable {}
 
@@ -18,6 +19,10 @@ class SignedUp extends SubmitState{
 }
 
 class LoggedIn extends SubmitState{
+  final AuthData authData;
+
+  LoggedIn(this.authData);
+
   @override
   List<Object> get props => const [];
 }

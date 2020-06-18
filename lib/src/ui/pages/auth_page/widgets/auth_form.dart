@@ -1,7 +1,9 @@
 import 'package:event_booking/service_locator.dart';
+import 'package:event_booking/src/ui/global/providers/token_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../bloc/submit_bloc/bloc.dart';
 import '../bloc/auth_toggle_bloc/bloc.dart';
@@ -15,11 +17,12 @@ import '../../../../../core/utils/ui/ui_messages.dart';
 class AuthForm extends StatefulWidget {
   final Function(String email, String password) onSignUp;
   final Function(String email, String password) onLogin;
+  final TokenProvider tokenProvider;
 
   const AuthForm({
     Key key,
     this.onSignUp,
-    this.onLogin,
+    this.onLogin, this.tokenProvider,
   }) : super(key: key);
 
   @override
@@ -238,10 +241,12 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
             listener: (_, state) {
               slideAnimation =
                   Tween(begin: confirmPasswordAnimationDirection, end: 0.0)
-                      .animate(CurvedAnimation(
-                parent: slideAnimationController,
-                curve: Curves.fastLinearToSlowEaseIn,
-              ));
+                      .animate(
+                CurvedAnimation(
+                  parent: slideAnimationController,
+                  curve: Curves.fastLinearToSlowEaseIn,
+                ),
+              );
               if (state is ToggleLoginState) {
                 questionText = "Don't have an account?";
                 suggestionText = "Sign Up";
@@ -314,9 +319,10 @@ class _AuthFormState extends State<AuthForm> with TickerProviderStateMixin {
           else if (state is IncorrectPassword)
             snackBar.show('Password is incorrect.');
           else if (state is SignedUp)
-            toast.show('Signed up, please waite.', length: ToastLength.SHORT);
+            toast.show('Signed up, please waite...', length: ToastLength.SHORT);
           else if (state is LoggedIn) {
-            toast.show("Welcome. You're all set.");
+            widget.tokenProvider.setToken(state.authData.token);
+            toast.show("Welcome");
             Navigator.of(context).pushReplacementNamed(DashboardPage.routeName);
           } else if (state is NoInternet)
             snackBar.show('Please check your internet connection');

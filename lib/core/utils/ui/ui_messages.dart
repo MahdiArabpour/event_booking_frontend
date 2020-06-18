@@ -2,10 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart' as toast;
 
 class Toast {
+  final Gravity gravity;
+
+  Toast({this.gravity = Gravity.BOTTOM});
+
   void show(
     String text, {
-    ToastLength length,
+    ToastLength length = ToastLength.LONG,
+    Color color = Colors.black87,
   }) {
+    toast.ToastGravity toastGravity;
+    switch (gravity) {
+      case Gravity.TOP:
+        toastGravity = toast.ToastGravity.TOP;
+        break;
+      case Gravity.CENTER:
+        toastGravity = toast.ToastGravity.CENTER;
+        break;
+      case Gravity.BOTTOM:
+        toastGravity = toast.ToastGravity.BOTTOM;
+        break;
+    }
+
     toast.Toast toastLength;
     int timeInSecForIosWeb;
     if (length == ToastLength.SHORT) {
@@ -18,14 +36,16 @@ class Toast {
     toast.Fluttertoast.showToast(
       msg: text,
       toastLength: toastLength,
-      gravity: toast.ToastGravity.BOTTOM,
+      gravity: toastGravity,
       timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: Colors.black87,
+      backgroundColor: color,
       textColor: Colors.white,
       fontSize: 16.0,
     );
   }
 }
+
+enum Gravity { TOP, CENTER, BOTTOM }
 
 enum ToastLength {
   SHORT,
@@ -45,10 +65,7 @@ class MySnackBar {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(
         text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0
-        ),
+        style: TextStyle(color: Colors.white, fontSize: 18.0),
       ),
       backgroundColor: color,
     ));

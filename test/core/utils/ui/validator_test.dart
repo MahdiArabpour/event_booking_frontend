@@ -57,4 +57,61 @@ void main() {
       expect(validator.validatePassword("password"), isNull);
     });
   });
+
+  group('Events validator', (){
+    test('returns the right error message when some fields are empty', () async {
+      final message1 = await validator.validateEventInputs();
+
+      final expectedMessage1 = 'Please enter title, description and price';
+
+      expect(message1, expectedMessage1);
+
+
+      final message2 = await validator.validateEventInputs(title: "test");
+
+      final expectedMessage2 = 'Please enter description and price';
+
+      expect(message2, expectedMessage2);
+
+
+      final message3 = await validator.validateEventInputs(description: "test description");
+
+      final expectedMessage3 = 'Please enter title and price';
+
+      expect(message3, expectedMessage3);
+
+
+      final message4 = await validator.validateEventInputs(price: "84.99");
+
+      final expectedMessage4 = 'Please enter title and description';
+
+      expect(message4, expectedMessage4);
+
+
+      final message5 = await validator.validateEventInputs(title: "test", description: "test description");
+
+      final expectedMessage5 = 'Please enter a price';
+
+      expect(message5, expectedMessage5);
+
+
+      final message6 = await validator.validateEventInputs(title: "test", price: "84.99");
+
+      final expectedMessage6 = 'Please enter a description';
+
+      expect(message6, expectedMessage6);
+
+
+      final message7 = await validator.validateEventInputs(description: "test description", price: "84.99");
+
+      final expectedMessage7 = 'Please enter a title';
+
+      expect(message7, expectedMessage7);
+    });
+
+    test('returns null when all fields are given', () async {
+      final message = await validator.validateEventInputs(title: "test", description: "test description", price: "84.99");
+      expect(message, isNull);
+    });
+  });
 }

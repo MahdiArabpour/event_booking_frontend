@@ -18,6 +18,13 @@ class LoginUserException implements Exception {
   LoginUserException([this.messages]);
 }
 
+class PostEventException implements Exception {
+  ///Contains a list of error messages gotten from the graphql server
+  final List<String> messages;
+
+  PostEventException([this.messages]);
+}
+
 class EmptyQueryException {
   final String message;
 
@@ -30,9 +37,11 @@ class UserDoesNotExistException implements Exception {}
 
 class IncorrectPasswordException implements Exception {}
 
-class UnknownServerException implements Exception {}
+class AuthenticationException implements Exception {}
 
 class NoInternetConnectionException implements Exception{}
+
+class UnknownServerException implements Exception {}
 
 abstract class ServerErrorMessages {
   static const USER_ALREADY_EXISTS = "User already Exists";

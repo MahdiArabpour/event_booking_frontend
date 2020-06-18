@@ -1,6 +1,8 @@
 import 'package:event_booking/service_locator.dart';
+import 'package:event_booking/src/ui/global/providers/token_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './widgets/auth_form.dart';
 import './bloc/submit_bloc/bloc.dart';
@@ -45,6 +47,7 @@ class AuthPage extends StatelessWidget {
               AuthForm(
                 onSignUp: _onSignUp,
                 onLogin: _onLogin,
+                tokenProvider: Provider.of<TokenProvider>(context),
               ),
             ],
           ),

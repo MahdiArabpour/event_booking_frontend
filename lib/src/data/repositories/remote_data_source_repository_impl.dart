@@ -45,6 +45,36 @@ class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
   }
 
   @override
+  Future<Event> postEvent(Event event, {@required String token}) async {
+    try{
+      final dateISOString =  event.date.toIso8601String();
+
+      final createEventQuery = graphql_mutation.createEvent(
+        title: event.title,
+        description: event.description,
+        price: event.price,
+        dateISOString: dateISOString,
+      );
+
+      final resultJson = await graphQl.send(createEventQuery, token: token);
+
+      final eventJson = resultJson['data']['createEvent'];
+
+      final Map<String, dynamic> createdEventJson = {
+        ...eventJson,
+        'title': event.title,
+        'description': event.description,
+        'price': event.price,
+        'date': dateISOString,
+      };
+
+      return Event.fromJson(createdEventJson);
+    } on ServerException catch (error){
+      throw PostEventException(error.messages);
+    }
+  }
+
+  @override
   Future<List<Event>> getEvents() async {
     final eventsQuery = graphql_query.getEvents(
       title: true,
@@ -64,31 +94,5 @@ class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
         .toList();
 
     return listOfEvents;
-  }
-
-  @override
-  Future<Event> postEvent(Event event) async {
-    final createEventQuery = graphql_mutation.createEvent(
-      title: event.title,
-      description: event.description,
-      price: event.price,
-      dateISOString: event.date.toIso8601String(),
-    );
-
-    final resultJson = await graphQl.send(createEventQuery);
-
-    final eventJson = resultJson['data']['createEvent'];
-
-    final createdEvent = Event(
-      (b) => b
-        ..id = eventJson['_id']
-        ..title = event.title
-        ..description = event.description
-        ..date = event.date
-        ..price = event.price
-        ..creator = event.creator.toBuilder(),
-    );
-
-    return createdEvent;
   }
 }

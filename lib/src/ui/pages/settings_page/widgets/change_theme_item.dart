@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../global/theme/app_themes.dart';
 import '../../../global/theme/bloc/bloc.dart';
-import '../../../global/theme/provider/theme_provider.dart';
+import '../../../global/providers/theme_provider.dart';
 
 class ChangeThemeItem extends StatefulWidget{
   @override

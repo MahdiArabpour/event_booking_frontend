@@ -9,7 +9,7 @@ String createEvent({
   @required double price,
   @required String dateISOString,
 }) =>
-    'mutation{createEvent(eventInput:{title:"$title",description:"$description",price:$price,date:"$dateISOString"}){_id}}';
+    'mutation{createEvent(eventInput:{title:"$title",description:"$description",price:$price,date:"$dateISOString"}){_id,creator{email}}}';
 
 String bookEvent(String eventId) =>
     'mutation{bookEvent(eventId:"$eventId"){_id,createdAt,updatedAt}}';

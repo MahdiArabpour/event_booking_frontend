@@ -1,4 +1,6 @@
+import 'package:event_booking/src/ui/global/providers/token_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './widgets/events_tab.dart';
 import './widgets/over_flow_menu.dart';
@@ -10,9 +12,11 @@ import './tab_bar_indicator_painter/circle_tab_indicator.dart';
 class DashboardPage extends StatelessWidget {
   static const routeName = "/dashboard-page";
 
-  void _onAddButtonPressed(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (context) => ModalBottomSheetBody(),
+  void _onAddButtonPressed(BuildContext ctx) => showModalBottomSheet(
+        context: ctx,
+        builder: (context) => ModalBottomSheetBody(
+          token: Provider.of<TokenProvider>(ctx).token,
+        ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
       );
 
@@ -27,14 +31,20 @@ class DashboardPage extends StatelessWidget {
         ],
         appBarBottom: TabBar(
           unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
-          indicator: CircleTabIndicator(strokeWidth: 4.0, lineWidth: MediaQuery.of(context).size.width / 3),
+          indicator: CircleTabIndicator(
+              strokeWidth: 4.0,
+              lineWidth: MediaQuery.of(context).size.width / 3),
           tabs: <Widget>[
             Tab(
-              icon: Icon(Icons.event),
+              icon: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? Icon(Icons.event)
+                  : null,
               text: "Events",
             ),
             Tab(
-              icon: Icon(Icons.bookmark),
+              icon: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? Icon(Icons.bookmark)
+                  : null,
               text: "Booked Events",
             ),
           ],

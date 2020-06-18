@@ -51,7 +51,7 @@ class SubmitBloc extends Bloc<SubmitEvent, SubmitState> {
     try {
       final authData = await login(email, password);
       await cacheToken(authData.token);
-      yield LoggedIn();
+      yield LoggedIn(authData);
     } on UserDoesNotExistException {
       yield UserNotExisting();
     } on IncorrectPasswordException {

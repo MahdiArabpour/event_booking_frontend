@@ -248,16 +248,13 @@ void main() {
     final title = "test";
     final description = "test description";
     final price = 9.99;
-    final date = DateTime.now().toIso8601String();
-    final creator = User(
-      (b) => b..email = "me@me.com",
-    ).toBuilder();
+    final date = DateTime.now();
 
     final eventsMutation = graphql_mutation.createEvent(
       title: title,
       description: description,
       price: price,
-      dateISOString: date,
+      dateISOString: date.toIso8601String(),
     );
 
     test(
@@ -265,18 +262,20 @@ void main() {
       () async {
         when(graphQl.send(any)).thenAnswer((realInvocation) async => {
               "data": {
-                "createEvent": {"_id": id}
+                "createEvent": {
+                  "_id": id,
+                  "creator": {"email": "me@me.com"},
+                }
               }
             });
 
-        await repository.postEvent(Event(
-          (b) => b
-            ..title = title
-            ..description = description
-            ..price = price
-            ..date = DateTime.parse(date)
-            ..creator = creator,
-        ));
+        await repository.postEvent(
+            Event((b) => b
+              ..title = title
+              ..description = description
+              ..price = price
+              ..date = date),
+            token: "");
 
         verify(graphQl.send(eventsMutation));
       },
@@ -289,18 +288,18 @@ void main() {
               "data": {
                 "createEvent": {
                   "_id": id,
+                  "creator": {"email": "me@me.com"}
                 }
               }
             });
 
-        final createdEvent = await repository.postEvent(Event(
-          (b) => b
-            ..title = title
-            ..description = description
-            ..price = price
-            ..date = DateTime.parse(date)
-            ..creator = creator,
-        ));
+        final createdEvent = await repository.postEvent(
+            Event((b) => b
+              ..title = title
+              ..description = description
+              ..price = price
+              ..date = date),
+            token: "");
 
         final expectedEvent = Event(
           (b) => b
@@ -308,8 +307,8 @@ void main() {
             ..title = title
             ..description = description
             ..price = price
-            ..date = DateTime.parse(date)
-            ..creator = creator,
+            ..date = createdEvent.date
+            ..creator = User((b) => b..email = "me@me.com").toBuilder(),
         );
 
         expect(
@@ -318,5 +317,6 @@ void main() {
         );
       },
     );
+
   });
 }
