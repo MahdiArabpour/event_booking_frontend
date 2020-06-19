@@ -11,6 +11,7 @@ import './ui/pages/dashboard_page/dashboard-page.dart';
 import './ui/pages/auth_page/bloc/submit_bloc/bloc.dart';
 import './ui/pages/auth_page/bloc/auth_toggle_bloc/bloc.dart';
 import './ui/pages/dashboard_page/bloc/post_event_bloc/bloc.dart';
+import 'ui/pages/dashboard_page/bloc/get_events_bloc/bloc.dart';
 
 class App extends StatelessWidget {
   final Widget launcherPage;
@@ -32,7 +33,10 @@ class App extends StatelessWidget {
         ),
         BlocProvider<PostEventBloc>(
           create: (_) => locator<PostEventBloc>(),
-        )
+        ),
+        BlocProvider<GetEventsBloc>(
+          create: (_) => locator<GetEventsBloc>(),
+        ),
       ],
       child: MultiProvider(
         providers: [

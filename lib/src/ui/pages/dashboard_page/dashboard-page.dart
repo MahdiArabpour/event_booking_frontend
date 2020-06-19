@@ -1,4 +1,6 @@
+import 'package:event_booking/src/ui/pages/dashboard_page/bloc/get_events_bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import './widgets/events_tab.dart';
@@ -26,6 +28,17 @@ class DashboardPage extends StatelessWidget {
       length: 2,
       child: MyScaffold(
         appBarTitle: Text('Event Booking'),
+        appBarLeading: BlocBuilder<GetEventsBloc,GetEventsState>(
+          builder: (context, state){
+            return (state is Loading) ? Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: CircularProgressIndicator(),
+            ) : IconButton(
+              onPressed: () => BlocProvider.of<GetEventsBloc>(context).add(GetEvents()),
+              icon: Icon(Icons.refresh),
+            );
+          },
+        ),
         appBarActions: <Widget>[
           OverFlowMenu(),
         ],

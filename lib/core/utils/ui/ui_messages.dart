@@ -59,7 +59,7 @@ class MySnackBar {
 
   MySnackBar({
     this.context,
-    this.color,
+    this.color = Colors.green,
   });
 
   void show(String text) {

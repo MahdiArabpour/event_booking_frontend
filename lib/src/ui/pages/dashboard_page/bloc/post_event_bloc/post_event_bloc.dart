@@ -1,12 +1,14 @@
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
+import './bloc.dart';
 import '../../../../../usecases/events.dart';
 import '../../../../../data/models/event.dart';
+import '../get_events_bloc/get_events_bloc.dart';
 import '../../../../../usecases/cache_token.dart';
+import '../get_events_bloc/get_events_event.dart';
 import '../../../../../../core/errors/exceptions.dart';
-
-import './bloc.dart';
 
 class PostEventBloc extends Bloc<PostEventEvent, PostEventState> {
   final Events events;
@@ -32,6 +34,7 @@ class PostEventBloc extends Bloc<PostEventEvent, PostEventState> {
     try {
       final addedEvent = await events.postEvent(event, token);
       yield EventAdded(addedEvent);
+      locator<GetEventsBloc>().add(GetEvents());
     } on AuthenticationException {
       await cacheToken.delete();
       yield AuthenticationFailed();

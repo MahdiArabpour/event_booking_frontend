@@ -29,7 +29,7 @@ final appThemeData = {
       accentColor: Colors.pink[900],
       cursorColor: Colors.pink,
       brightness: Brightness.dark,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(
@@ -57,7 +57,7 @@ final appThemeData = {
       accentColor: Colors.deepOrange[900],
       cursorColor: Colors.deepOrange,
       brightness: Brightness.dark,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(
@@ -85,7 +85,7 @@ final appThemeData = {
       accentColor: Colors.green[900],
       cursorColor: Colors.green,
       brightness: Brightness.dark,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       unselectedWidgetColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[800]),
       textTheme: TextTheme(

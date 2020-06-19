@@ -9,8 +9,8 @@ class Events {
 
   Events({@required this.repository});
 
-  Future<List<Event>> getEvents() {
-    return repository.getEvents();
+  Future<List<Event>> getEvents() async {
+    return await repository.getEvents();
   }
 
   Future<Event> postEvent(Event event, String token) async {

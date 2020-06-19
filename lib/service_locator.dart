@@ -1,3 +1,4 @@
+import 'package:event_booking/src/ui/pages/dashboard_page/bloc/get_events_bloc/bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -51,4 +52,5 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => Logout(cachedToken: locator()));
   locator.registerLazySingleton(() => PostEventBloc(events: locator(), cacheToken: locator()));
   locator.registerLazySingleton(() => Toast());
+  locator.registerLazySingleton(() => GetEventsBloc(events: locator()));
 }

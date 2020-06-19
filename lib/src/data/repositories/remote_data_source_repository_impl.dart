@@ -77,6 +77,7 @@ class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
   @override
   Future<List<Event>> getEvents() async {
     final eventsQuery = graphql_query.getEvents(
+      id: true,
       title: true,
       description: true,
       date: true,
@@ -88,11 +89,11 @@ class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
 
     final eventsJson = resultJson['data']['events'];
 
-    final listOfEvents = eventsJson
+    final List<Event> listOfEvents = eventsJson
         .map((eventJson) => Event.fromJson(eventJson))
         .cast<Event>()
         .toList();
 
-    return listOfEvents;
+    return listOfEvents.reversed.toList();
   }
 }
