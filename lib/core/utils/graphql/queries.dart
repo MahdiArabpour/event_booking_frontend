@@ -1,4 +1,4 @@
-import 'package:event_booking/core/errors/exceptions.dart';
+import '../../errors/exceptions.dart';
 
 String login(String email, String password) =>
     'query{login(email:"$email", password:"$password"){userId,token,tokenExpiration}}';

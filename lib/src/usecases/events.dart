@@ -13,9 +13,9 @@ class Events {
     return repository.getEvents();
   }
 
-  Future<Event> postEvent(Event event, String token) {
+  Future<Event> postEvent(Event event, String token) async {
     try {
-      return repository.postEvent(event, token: token);
+      return await repository.postEvent(event, token: token);
     } on PostEventException catch (errors) {
       final messages = errors.messages;
 

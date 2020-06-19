@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart' as toast;
 
 class Toast {
-  final Gravity gravity;
-
-  Toast({this.gravity = Gravity.BOTTOM});
-
   void show(
     String text, {
     ToastLength length = ToastLength.LONG,
     Color color = Colors.black87,
+    Gravity gravity = Gravity.BOTTOM,
   }) {
     toast.ToastGravity toastGravity;
     switch (gravity) {
@@ -45,7 +42,11 @@ class Toast {
   }
 }
 
-enum Gravity { TOP, CENTER, BOTTOM }
+enum Gravity {
+  TOP,
+  CENTER,
+  BOTTOM,
+}
 
 enum ToastLength {
   SHORT,

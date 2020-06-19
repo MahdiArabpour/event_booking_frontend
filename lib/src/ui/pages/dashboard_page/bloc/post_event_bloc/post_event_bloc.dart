@@ -1,9 +1,10 @@
-import 'package:event_booking/core/errors/exceptions.dart';
-import 'package:event_booking/src/data/models/event.dart';
-import 'package:event_booking/src/usecases/cache_token.dart';
-import 'package:event_booking/src/usecases/events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../../usecases/events.dart';
+import '../../../../../data/models/event.dart';
+import '../../../../../usecases/cache_token.dart';
+import '../../../../../../core/errors/exceptions.dart';
 
 import './bloc.dart';
 
@@ -32,8 +33,8 @@ class PostEventBloc extends Bloc<PostEventEvent, PostEventState> {
       final addedEvent = await events.postEvent(event, token);
       yield EventAdded(addedEvent);
     } on AuthenticationException {
-      yield AuthenticationFailed();
       await cacheToken.delete();
+      yield AuthenticationFailed();
     } on NoInternetConnectionException {
       yield NoInternet();
     } on UnknownServerException {

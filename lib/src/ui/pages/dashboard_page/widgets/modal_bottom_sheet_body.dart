@@ -1,15 +1,14 @@
-import 'package:event_booking/core/utils/ui/ui_messages.dart';
-import 'package:event_booking/core/utils/ui/validator.dart';
 import 'package:event_booking/service_locator.dart';
-import 'package:event_booking/src/data/models/event.dart';
-import 'package:event_booking/src/ui/global/providers/token_provider.dart';
-import 'package:event_booking/src/ui/pages/auth_page/auth_page.dart';
-import 'package:event_booking/src/ui/pages/dashboard_page/bloc/post_event_bloc/bloc.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
+import '../../../../usecases/logout.dart';
+import '../bloc/post_event_bloc/bloc.dart';
+import '../../../../data/models/event.dart';
+import '../../../../../core/utils/ui/validator.dart';
+import '../../../../../core/utils/ui/ui_messages.dart';
 
 class ModalBottomSheetBody extends StatefulWidget {
   final String token;
@@ -23,33 +22,33 @@ class ModalBottomSheetBody extends StatefulWidget {
 class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
   DateTime _selectedDate;
 
-  TextEditingController titleController;
-  TextEditingController descriptionController;
-  TextEditingController priceController;
+  TextEditingController _titleController;
+  TextEditingController _descriptionController;
+  TextEditingController _priceController;
 
-  FocusNode titleFocus;
-  FocusNode descriptionFocus;
+  FocusNode _titleFocus;
+  FocusNode _descriptionFocus;
 
-  Validator validator;
+  Validator _validator;
 
-  PostEventBloc bloc;
+  PostEventBloc _bloc;
 
-  Toast toast;
+  Toast _toast;
 
   @override
   initState() {
     super.initState();
 
-    titleController = TextEditingController();
-    descriptionController = TextEditingController();
-    priceController = TextEditingController();
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _priceController = TextEditingController();
 
-    titleFocus = FocusNode();
-    descriptionFocus = FocusNode();
+    _titleFocus = FocusNode();
+    _descriptionFocus = FocusNode();
 
-    validator = locator<Validator>();
+    _validator = locator<Validator>();
 
-    toast = Toast(gravity: Gravity.TOP);
+    _toast = locator<Toast>();
   }
 
   _onChooseDateButtonPressed(BuildContext context) async {
@@ -66,24 +65,24 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
   void _onTodayTextTapped() => setState(() => _selectedDate = DateTime.now());
 
   void _onAddButtonPressed() async {
-    String errorMessage = await validator.validateEventInputs(
-      title: titleController.text,
-      description: descriptionController.text,
-      price: priceController.text,
+    String errorMessage = await _validator.validateEventInputs(
+      title: _titleController.text,
+      description: _descriptionController.text,
+      price: _priceController.text,
     );
     if (errorMessage == null && _selectedDate == null)
       errorMessage = 'Please choose a date';
     if (errorMessage != null) {
-      return toast.show(errorMessage, color: Colors.red);
+      return _toast.show(errorMessage, color: Colors.red, gravity: Gravity.TOP);
     }
 
-    bloc.add(
+    _bloc.add(
       PostEvent(
         event: Event(
           (b) => b
-            ..title = titleController.text
-            ..description = descriptionController.text
-            ..price = double.parse(priceController.text)
+            ..title = _titleController.text
+            ..description = _descriptionController.text
+            ..price = double.parse(_priceController.text)
             ..date = _selectedDate,
         ),
         token: widget.token,
@@ -91,9 +90,53 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
     );
   }
 
+  Widget _buildAddButton() => BlocConsumer<PostEventBloc, PostEventState>(
+        bloc: _bloc,
+        listener: (context, state) {
+          if (state is EventAdded) {
+            Navigator.of(context).pop();
+            _toast.show("Event added successfully", gravity: Gravity.TOP);
+          } else if (state is AuthenticationFailed) {
+            Navigator.of(context).pop();
+            _toast.show('Please login again',
+                color: Colors.red[300], gravity: Gravity.TOP);
+            final logout = locator<Logout>();
+            logout(context);
+          } else if (state is NoInternet) {
+            _toast.show('Check your internet connection',
+                color: Colors.red, gravity: Gravity.TOP);
+          } else if (state is UnknownError) {
+            _toast.show('An unknown error occured',
+                color: Colors.red, gravity: Gravity.TOP);
+          }
+        },
+        builder: (_, state) {
+          final isLoading = state is Loading;
+          return RaisedButton(
+            onPressed: isLoading ? null : _onAddButtonPressed,
+            child: Container(
+              height: 35,
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: isLoading
+                    ? FittedBox(
+                        fit: BoxFit.cover,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
+                      )
+                    : const Text('Add'),
+              ),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+          );
+        },
+      );
+
   @override
   Widget build(BuildContext context) {
-    bloc = context.bloc<PostEventBloc>();
+    _bloc = context.bloc<PostEventBloc>();
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(
@@ -116,12 +159,12 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
               height: 10.0,
             ),
             TextField(
-              controller: titleController,
-              focusNode: titleFocus,
+              controller: _titleController,
+              focusNode: _titleFocus,
               textInputAction: TextInputAction.next,
               onSubmitted: (_) {
-                titleFocus.unfocus();
-                descriptionFocus.requestFocus();
+                _titleFocus.unfocus();
+                _descriptionFocus.requestFocus();
               },
               decoration: InputDecoration(
                 labelText: "Title",
@@ -131,8 +174,8 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
               height: 5.0,
             ),
             TextField(
-              controller: descriptionController,
-              focusNode: descriptionFocus,
+              controller: _descriptionController,
+              focusNode: _descriptionFocus,
               minLines: 3,
               maxLines: 5,
               maxLength: 1850,
@@ -144,7 +187,7 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
               height: 5.0,
             ),
             TextField(
-              controller: priceController,
+              controller: _priceController,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.numberWithOptions(),
               decoration: InputDecoration(
@@ -206,50 +249,7 @@ class _ModalBottomSheetBodyState extends State<ModalBottomSheetBody> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Cancel'),
                 ),
-                BlocConsumer<PostEventBloc, PostEventState>(
-                  bloc: bloc,
-                  listener: (context, state) {
-                    if (state is EventAdded){
-                      Navigator.of(context).pop();
-                      toast.show("Event added successfully");
-                    }
-                    else if (state is AuthenticationFailed){
-                      Navigator.of(context).pop();
-                      toast.show('Please login again', color: Colors.red[300]);
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (_) => AuthPage(),
-                      ));
-                    }
-                    else if (state is NoInternet){
-                      toast.show('Check your internet connection');
-                    }
-                    else if (state is UnknownError){
-                      toast.show('An unknown error occured');
-                    }
-                  },
-                  builder: (_, state) {
-                    final isLoading = state is Loading;
-                    return RaisedButton(
-                      onPressed: isLoading ? null : _onAddButtonPressed,
-                      child: Container(
-                        height: 35,
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: isLoading
-                              ? FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
-                                  ),
-                                )
-                              : const Text('Add'),
-                        ),
-                      ),
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
-                    );
-                  },
-                ),
+                _buildAddButton(),
               ],
             ),
           ],

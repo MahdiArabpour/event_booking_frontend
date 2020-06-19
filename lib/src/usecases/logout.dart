@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/utils/ui/ui_messages.dart';
-import '../ui/pages/auth_page/auth_page.dart';
 import './cache_token.dart';
+import '../ui/pages/auth_page/auth_page.dart';
 
 class Logout {
   final CacheToken cachedToken;
@@ -17,8 +16,5 @@ class Logout {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (_) => AuthPage(),
     ));
-
-    Toast toast = Toast();
-    toast.show("Your're logged out");
   }
 }

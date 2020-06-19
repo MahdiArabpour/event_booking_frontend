@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../usecases/logout.dart';
 import '../../../../../service_locator.dart';
+import '../../../../../core/utils/ui/ui_messages.dart';
 
 class LogoutAlert extends StatelessWidget {
   @override
@@ -31,5 +32,7 @@ class LogoutAlert extends StatelessWidget {
     final logout = locator<Logout>();
     Navigator.of(context).pop();
     await logout(context);
+    final toast = locator<Toast>();
+    toast.show("Your're logged out");
   }
 }

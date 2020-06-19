@@ -1,4 +1,3 @@
-import 'package:event_booking/src/ui/global/providers/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +7,7 @@ import './widgets/booked_events_tab.dart';
 import '../../global/widgets/my_scaffold.dart';
 import './widgets/modal_bottom_sheet_body.dart';
 import './tab_bar_indicator_painter/circle_tab_indicator.dart';
+import '../../global/providers/token_provider.dart';
 
 class DashboardPage extends StatelessWidget {
   static const routeName = "/dashboard-page";

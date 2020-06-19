@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
 
 import '../data/models/user.dart';
-import '../repositories/remote_data_source_repository.dart';
 import '../../core/errors/exceptions.dart';
+import '../repositories/remote_data_source_repository.dart';
 
 class SignUp {
   final RemoteDataSourceRepository repository;

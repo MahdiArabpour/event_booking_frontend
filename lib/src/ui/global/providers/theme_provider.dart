@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:event_booking/service_locator.dart';
+import 'package:flutter/material.dart';
 
 import '../theme/app_themes.dart';
 import '../../../usecases/cache_theme.dart';

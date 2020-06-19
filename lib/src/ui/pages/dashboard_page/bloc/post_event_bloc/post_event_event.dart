@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:event_booking/src/data/models/event.dart';
+
+import '../../../../../data/models/event.dart';
 
 abstract class PostEventEvent extends Equatable {}
 

@@ -1,10 +1,10 @@
-import 'package:event_booking/src/usecases/cache_token.dart';
+import 'package:event_booking/service_locator.dart';
 import 'package:flutter/material.dart';
 
-import 'src/app.dart';
-import 'service_locator.dart';
-import 'src/ui/pages/dashboard_page/dashboard-page.dart';
-import 'src/ui/pages/auth_page/auth_page.dart';
+import './src/app.dart';
+import './src/usecases/cache_token.dart';
+import './src/ui/pages/auth_page/auth_page.dart';
+import './src/ui/pages/dashboard_page/dashboard-page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:event_booking/src/data/models/event.dart';
+
+import '../../../../../data/models/event.dart';
 
 abstract class PostEventState extends Equatable{}
 
