@@ -18,4 +18,10 @@ abstract class RemoteDataSourceRepository {
   Future<List<Event>> getEvents();
 
   Future<Event> postEvent(Event event, {@required String token});
+
+  Future<String> bookEvent(String eventId, {@required String token});
+
+  Future<List<Event>> getBookings({@required String token});
+
+  Future<void> cancelBooking(String bookingId, {@required String token});
 }

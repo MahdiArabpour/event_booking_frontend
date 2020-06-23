@@ -74,7 +74,7 @@ void main() {
         );
 
         final expectedQuery =
-            'query{bookings{_id,event{_id},user{_id},createdAt,updatedAt}}';
+            'query{bookings{_id,event{_id,title,description,price,date,creator{email}},user{email},createdAt,updatedAt}}';
 
         expect(query, expectedQuery);
       });
@@ -86,7 +86,7 @@ void main() {
           updatedAt: true,
         );
 
-        final expectedQuery1 = 'query{bookings{_id,user{_id},updatedAt}}';
+        final expectedQuery1 = 'query{bookings{_id,user{email},updatedAt}}';
 
         expect(query1, expectedQuery1);
 
@@ -95,7 +95,7 @@ void main() {
           createdAt: true,
         );
 
-        final expectedQuery2 = 'query{bookings{user{_id},createdAt}}';
+        final expectedQuery2 = 'query{bookings{user{email},createdAt}}';
 
         expect(query2, expectedQuery2);
 
@@ -111,7 +111,7 @@ void main() {
           event: true,
         );
 
-        final expectedQuery4 = 'query{bookings{event{_id}}}';
+        final expectedQuery4 = 'query{bookings{event{_id,title,description,price,date,creator{email}}}}';
 
         expect(query4, expectedQuery4);
       });

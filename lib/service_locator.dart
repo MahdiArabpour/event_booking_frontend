@@ -1,4 +1,6 @@
+import 'package:event_booking/src/ui/pages/dashboard_page/bloc/book_event_bloc/bloc.dart';
 import 'package:event_booking/src/ui/pages/dashboard_page/bloc/get_events_bloc/bloc.dart';
+import 'package:event_booking/src/usecases/bookings.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -53,4 +55,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => PostEventBloc(events: locator(), cacheToken: locator()));
   locator.registerLazySingleton(() => Toast());
   locator.registerLazySingleton(() => GetEventsBloc(events: locator()));
+  locator.registerLazySingleton(() => Bookings(repository: locator<RemoteDataSourceRepositoryImpl>()));
+  locator.registerFactory(() => BookEventBloc(bookings: locator(), cacheToken: locator()));
 }

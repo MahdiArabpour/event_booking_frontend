@@ -35,8 +35,8 @@ String getBookings({
 }) {
   final fields = [
     if (id) "_id",
-    if (event) "event{_id}",
-    if (user) "user{_id}",
+    if (event) "event{_id,title,description,price,date,creator{email}}",
+    if (user) "user{email}",
     if (createdAt) "createdAt",
     if (updatedAt) "updatedAt",
   ];

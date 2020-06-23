@@ -25,6 +25,13 @@ class PostEventException implements Exception {
   PostEventException([this.messages]);
 }
 
+class BookEventException implements Exception {
+  ///Contains a list of error messages gotten from the graphql server
+  final List<String> messages;
+
+  BookEventException([this.messages]);
+}
+
 class EmptyQueryException {
   final String message;
 

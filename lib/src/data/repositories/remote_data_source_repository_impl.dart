@@ -96,4 +96,31 @@ class RemoteDataSourceRepositoryImpl implements RemoteDataSourceRepository {
 
     return listOfEvents.reversed.toList();
   }
+
+  @override
+  Future<String> bookEvent(String eventId, {@required String token}) async {
+    try{
+      final bookEventMutation = graphql_mutation.bookEvent(eventId);
+
+      final resultJson = await graphQl.send(bookEventMutation, token: token);
+
+      final bookingJson = resultJson['data']['bookEvent'];
+
+      return bookingJson['_id'] as String;
+    } on ServerException catch (error){
+      throw BookEventException(error.messages);
+    }
+  }
+
+  @override
+  Future<void> cancelBooking(String bookingId, {@required String token}) async {
+    // TODO: implement cancelBooking
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Event>> getBookings({@required String token}) async {
+    // TODO: implement getBookings
+    throw UnimplementedError();
+  }
 }

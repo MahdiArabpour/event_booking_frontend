@@ -155,6 +155,7 @@ void main() {
 
   group('getEvents', () {
     final eventsQuery = graphql_query.getEvents(
+      id: true,
       title: true,
       description: true,
       date: true,
@@ -233,7 +234,7 @@ void main() {
             "date": "2020-06-05T11:42:38.585Z",
             "creator": {"email": "test@test.com"}
           }),
-        ];
+        ].reversed.toList();
 
         expect(
           events,
